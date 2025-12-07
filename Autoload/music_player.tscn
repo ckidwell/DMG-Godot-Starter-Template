@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c67gg4xaa6qir"]
+
+[ext_resource type="AudioStream" uid="uid://spnyxvp76ktv" path="res://Media/MuselyAIMusic/musely-Pixel Dreams.mp3" id="1_pmp8o"]
+
+[node name="MusicPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_pmp8o")
+autoplay = true
+bus = &"Music"
+parameters/looping = true

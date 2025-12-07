@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqw47yi0rm4q8"]
+
+[ext_resource type="Script" uid="uid://dtteeu5oawgjl" path="res://Autoload/RandomNumberManager.cs" id="1_xdq5l"]
+
+[node name="RandomNumberManager" type="Node"]
+script = ExtResource("1_xdq5l")

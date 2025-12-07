@@ -1,0 +1,147 @@
+[gd_scene load_steps=9 format=3 uid="uid://38edjshjp708"]
+
+[ext_resource type="Script" uid="uid://q7hxgy7colsb" path="res://Scenes/Achievements/AchievementToastCard.cs" id="1_u4hbh"]
+[ext_resource type="Texture2D" uid="uid://d18ebckhr0nuu" path="res://Media/button_r.png" id="3_y40i1"]
+[ext_resource type="FontFile" uid="uid://bnb7qaxyd6l6j" path="res://Media/NbPixelFontBundle_v1_0/Habbo.ttf" id="4_sru3j"]
+[ext_resource type="Texture2D" uid="uid://qohq5bppf0ah" path="res://Media/UI/x_button_32x.png" id="4_x3f0x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ebbc"]
+bg_color = Color(0.19785449, 0.2316122, 0.34677336, 1)
+
+[sub_resource type="Animation" id="Animation_1psj4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_48coo"]
+resource_name = "selected"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15, 0.4),
+"transitions": PackedFloat32Array(1, 1.99999, 1.6245, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.87, 0.87), Vector2(0.78, 0.78), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_550vk"]
+_data = {
+&"RESET": SubResource("Animation_1psj4"),
+&"selected": SubResource("Animation_48coo")
+}
+
+[node name="AchievementToastCard" type="PanelContainer" node_paths=PackedStringArray("nameLabel", "descriptionLabel", "card", "closeButton", "achievementIconTextureRect") groups=["upgrade_card"]]
+offset_right = 476.0
+offset_bottom = 99.0
+pivot_offset = Vector2(100, 100)
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ebbc")
+script = ExtResource("1_u4hbh")
+nameLabel = NodePath("MarginContainer/HBoxContainer/VBoxContainer2/NameLabel")
+descriptionLabel = NodePath("MarginContainer/HBoxContainer/VBoxContainer2/DescriptionLabel")
+card = NodePath(".")
+closeButton = NodePath("MarginContainer/CloseButton")
+achievementIconTextureRect = NodePath("MarginContainer/HBoxContainer/AchievementIconPanelContainer/TextureRect")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_550vk")
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AchievementIconPanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_type_variation = &"BlackPanelContainer"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/AchievementIconPanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_y40i1")
+stretch_mode = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0.592157, 0.0313726, 0.239216, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "ACHIEVEMENT NAME"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("4_sru3j")
+theme_override_font_sizes/font_size = 23
+text = "A really great description here. This ability would be super great and possibly take even more space."
+autowrap_mode = 2
+
+[node name="CloseButton" type="TextureButton" parent="MarginContainer"]
+self_modulate = Color(0.36078432, 0.4117647, 0.5803922, 1)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture_normal = ExtResource("4_x3f0x")

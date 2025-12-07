@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmhlhx07yak3h"]
+
+[ext_resource type="Script" uid="uid://bwmwr20qa2el0" path="res://Autoload/ToastManager.cs" id="1_ulyk7"]
+[ext_resource type="PackedScene" uid="uid://38edjshjp708" path="res://Scenes/Achievements/achievement_toast_card.tscn" id="2_ywyy7"]
+
+[node name="ToastManager" type="CanvasLayer" node_paths=PackedStringArray("AchievementToastContainer")]
+script = ExtResource("1_ulyk7")
+AchievementToastCard = ExtResource("2_ywyy7")
+AchievementToastContainer = NodePath("AchievementToastContainer/VBoxContainer")
+
+[node name="AchievementToastContainer" type="MarginContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -474.0
+offset_bottom = 1018.0
+grow_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AchievementToastContainer"]
+layout_mode = 2

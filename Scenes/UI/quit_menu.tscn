@@ -1,0 +1,125 @@
+[gd_scene load_steps=8 format=3 uid="uid://lv1w271423oa"]
+
+[ext_resource type="Script" uid="uid://bd0fm87e6067i" path="res://Scenes/UI/QuitMenu.cs" id="1_b78nh"]
+[ext_resource type="Texture2D" uid="uid://85gf807a27wr" path="res://Media/game-title.png" id="2_wbpnb"]
+[ext_resource type="FontFile" uid="uid://csqjk5gtg5wuj" path="res://Media/NbPixelFontBundle_v1_0/Rockboxcond12.ttf" id="3_hrrok"]
+[ext_resource type="Texture2D" uid="uid://c5s3c7d5gcnn0" path="res://Media/UI/button_256_bevl.png" id="4_b78nh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i2xx2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5wsvm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o14dv"]
+
+[node name="QuitMenu" type="CanvasLayer" node_paths=PackedStringArray("_confirmButton", "_cancelButton")]
+script = ExtResource("1_b78nh")
+_confirmButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/Confirm")
+_cancelButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/Cancel")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.24313726, 0.28235295, 0.41568628, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+
+[node name="GameTitleTextureRect" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_wbpnb")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_i2xx2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_5wsvm")
+
+[node name="MenuButtonsVBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_hrrok")
+theme_override_font_sizes/font_size = 55
+text = "QUIT_TO_MAIN_"
+horizontal_alignment = 1
+
+[node name="Confirm" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_b78nh")
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/Confirm"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -17.5
+offset_right = 25.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_hrrok")
+theme_override_font_sizes/font_size = 40
+text = "CONFIRM_"
+
+[node name="Cancel" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_b78nh")
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/Cancel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -17.5
+offset_right = 25.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_hrrok")
+theme_override_font_sizes/font_size = 40
+text = "CANCEL_"
+
+[node name="VSeparator2" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_5wsvm")
+
+[node name="HSeparator2" type="HSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_o14dv")

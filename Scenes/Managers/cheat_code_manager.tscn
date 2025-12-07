@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://463byhmw3e2h"]
+
+[ext_resource type="Script" uid="uid://c5ie6bh31trh2" path="res://Scenes/Managers/CheatCodeManager.cs" id="1_i4g5q"]
+
+[node name="CheatCodeManager" type="Node"]
+script = ExtResource("1_i4g5q")

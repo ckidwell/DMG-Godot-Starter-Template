@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://0tnrblou4fje"]
+
+[ext_resource type="Script" uid="uid://c066uyj7s5xru" path="res://Scenes/Audio/AudioHitPlayerComponent.cs" id="1_c0ybe"]
+
+[node name="AudioHitPlayerComponent" type="AudioStreamPlayer2D"]
+script = ExtResource("1_c0ybe")

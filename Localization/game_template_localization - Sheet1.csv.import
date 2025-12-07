@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://c6wwm854la6ra"
+
+[deps]
+
+files=["res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.jp.translation"]
+
+source_file="res://Localization/game_template_localization - Sheet1.csv"
+dest_files=["res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.jp.translation"]
+
+[params]
+
+compress=true
+delimiter=0

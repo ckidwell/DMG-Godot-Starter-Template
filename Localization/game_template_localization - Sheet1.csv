@@ -1,0 +1,41 @@
+LANGUAGE,en,fr,es,de,it,jp
+English,English,Anglaise,Inglés,Englisch,English,英語
+French,Francais,Français,Francés,Französisch,Francais,フランス語
+Spanish,Espanol,Inglesa,Español,Spanisch,Espanol,スペイン語
+German,Deutsch,Alemana,Alemán,Deutsch,Deutsch,ドイツ人
+Japanese,Japanese,Japonesa,Japonés,Japanisch,Japanese,本語
+Italian,Italian,Italiana,Italiana,Italienisch,Italiana,イタリアの
+PRESS_ANY_,PRESS ANY KEY TO CONTINUE..,APPUYEZ SUR N'IMPORTE QUELLE TOUCHE POUR CONTINUER..,PULSE CUALQUIER TECLA PARA CONTINUAR..,"DRÜCKEN SIE EINE BELIEBIGE TASTE, UM FORTZUFAHREN..",PREMERE UN TASTO QUALSIASI PER CONTINUARE..,何かキーを押すと続行します..
+PLAY_,PLAY,JOUER,JUGAR,SPIELEN,GIOCARE,遊ぶ
+UPGRADES_,UPGRADES,MISES À NIVEAU,ACTUALIZACIONES,ERWEITERN,AGGIORNAMENTI,アップグレード
+ACHIEVEMENTS_,ACHIEVEMENTS,RÉALISATIONS,LOGROS,ERFOLGE,RISULTATI,業績
+SETTINGS_,SETTINGS,PARAMÈTRES,AJUSTES,EINSTELLUNGEN,IMPOSTAZIONI,設定
+QUIT_,QUIT,QUITTER,ABANDONAR,VERLASSEN,ESENTATO,やめる
+BACK_,BACK,DOS,ATRÁS,ZURÜCK,INDIETRO,戻る
+CONFIRM_,CONFIRM,Confirmer,Confirmar,Bestätigen,Confermare,確認する
+CANCEL_,CANCEL,Annuler,Cancelar,Stornieren,Cancellare,キャンセル
+LOCKED_,LOCKED,FERMÉ À CLÉ,BLOQUEADO,GESPERRT,BLOCCATO,ロック済み
+UNLOCKED_,UNLOCKED,DÉBLOQUÉ,DESBLOQUEADO,ENTSPERRT,SBLOCCATO,ロック解除済み
+SELECT_,SELECT,SÉLECTIONNER,SELECCIONAR,WÄHLEN,SELEZIONARE,選択する
+CHARACTER_SELECTION_,CHARACTER SELECTION,SÉLECTION DES PERSONNAGES,SELECCIÓN DE PERSONAJES,CHARAKTERAUSWAHL,SELEZIONE DEL PERSONAGGIO,キャラクターの選択
+LEVEL_SELECTION_,LEVEL SELECTION,SÉLECTION DU NIVEAU,SELECCIÓN DE NIVEL,STUFE-AUSWAHL,SELEZIONE DEL LIVELLO,レベルの選択
+LOADING_,LOADING,CHARGEMENT,CARGANDO,WIRD GELADEN,CARICAMENTO,読み込み中
+OPEN_,OPEN,OUVRIR,ABIERTO,OFFEN,APRIRE,開ける
+CLOSE_,CLOSE,FERMER,CERCA,SCHLIESSEN,VICINO,近い
+PAUSED_,PAUSED,EN PAUSE,PAUSADO,PAUSE,PAUSED,一時停止中
+RESUME_,RESUME,CONTINUER,REANUDAR,WIEDER AUFNEHMEN,IN PAUSA,再開する
+HEALTH_,HEALTH,SANTÉ,VITALIDAD,GESUNDHEIT,SALUTE,健康
+ARMOR_,ARMOR,ARMURE,ARMADURA,RÜSTUNG,ARMATURA,鎧
+EXPERIENCE_,EXPERIENCE,EXPÉRIENCE,EXPERIENCIA,ERFAHRUNG,ESPERIENZA,経験
+VICTORY_,VICTORY,LA VICTOIRE,VICTORIA,SIEG,VITTORIA,勝利
+VICTORY_MESSAGE_,"You have shredded your foes, and sent Cthulu back to the void. Tiger's blood from Mars truly runs through your veins!",Vous avez déchiqueté vos ennemis et renvoyé Cthulu dans le vide. Le sang du Tigre de Mars coule véritablement dans vos veines !,Has destrozado a tus enemigos y enviado a Cthulu de regreso al vacío. ¡La sangre de tigre de Marte realmente corre por tus venas!,Du hast deine Feinde zerfetzt und Cthulu zurück in die Leere geschickt. Tigerblut vom Mars fließt wahrlich durch Ihre Adern!,ai fatto a pezzi i tuoi nemici e rimandato Cthulu nel vuoto. Il sangue di tigre proveniente da Marte scorre davvero nelle tue vene!,あなたは敵を粉砕し、クトゥルーを虚空に送り返しました。 まさに火星から来たタイガーの血があなたの血管に流れているのです！
+DEFEAT_,DEFEAT,DÉFAITE,FRACASO,VERLUST,SCONFITTA,敗北
+DEFEAT_MESSAGE_,The sour taste of defeat overwhelms you. The hordes of Cthulhu have won - in the end darkness is inevitable.,"Le goût aigre de la défaite vous envahit. Les hordes de Cthulhu ont gagné à la fin, l'obscurité est inévitable.",El sabor amargo de la derrota te abruma. Las hordas de Cthulhu han vencido y al final la oscuridad es inevitable.,Der saure Geschmack der Niederlage überwältigt dich. Die Horden von Cthulhu haben am Ende gesiegt. Die Dunkelheit ist unvermeidlich.,"Il sapore aspro della sconfitta ti travolge. Le orde di Cthulhu hanno vinto, alla fine l'oscurità è inevitabile.",敗北の酸っぱさがあなたを襲う。 クトゥルフの大群は最終的に勝利を収めましたが、暗闇は避けられません。
+GOLD_AMOUNT_,Gold,Pièce d'or,Moneda de oro,Goldmünze,Moneta d'oro,通貨
+BONUS_GOLD_DESCRIPTION_,25 Gold!  Gold  is used to purchase upgrades from the main menu.,25 pièces d'or ! L'or est utilisé pour acheter des améliorations depuis le menu principal.,¡25 de oro! El oro se usa para comprar mejoras desde el menú principal.,25 Gold! Mit Gold können Sie im Hauptmenü Upgrades kaufen.,25 Oro! L'oro viene utilizzato per acquistare potenziamenti dal menu principale.,
+WINDOWED_MODE_,Windowed Mode,Mode fenêtré,Modo ventana,Fenstermodus,Modalità finestra,ウィンドウモード
+MAIN_VOLUME_,Main Volume,Volume principal,Volumen principal,Hauptvolumen,Volume principale,メインボリューム
+SOUND_EFFECTS_VOLUME_,Sound Effects Volume,Volume des effets sonores,Volumen de efectos de sonido,Lautstärke der Soundeffekte,Volume degli effetti sonori,効果音の音量
+MUSIC_VOLUME_,Music Volume,Volume musical,Volumen de la música,Musiklautstärke,Volume della musica,音楽の音量
+GAME_TEMPLATE_,Game Template,Modèle de jeu,Plantilla de juego,Spielvorlage,Modello di gioco,ゲームテンプレート
+QUIT_TO_MAIN_,Quit to Main Menu?,Retour au menu principal ?,¿Salir al menú principal?,Zurück zum Hauptmenü?,Vuoi tornare al menu principale?,メインメニューに戻りますか?

@@ -1,0 +1,79 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgslyjjww64vx"]
+
+[ext_resource type="Script" uid="uid://cn4hbl26tin6" path="res://scenes/UI/AchievementsMenu.cs" id="1_raj5i"]
+[ext_resource type="PackedScene" uid="uid://curtep20x07gr" path="res://scenes/Component/audio_hit_player_component.tscn" id="2_6uduw"]
+[ext_resource type="PackedScene" uid="uid://hjmt8vcnkiiv" path="res://scenes/UI/achievement_card.tscn" id="2_8cevc"]
+[ext_resource type="AudioStream" uid="uid://dkuy0t1s3vkpu" path="res://Assets/Sounds/Fantasy Click 3.wav" id="3_4yoes"]
+[ext_resource type="PackedScene" uid="uid://c8b0wedcamuhg" path="res://scenes/UI/vignette.tscn" id="4_toc68"]
+[ext_resource type="PackedScene" uid="uid://cja248uh8aj1s" path="res://scenes/UI/sound_button.tscn" id="5_fjx3j"]
+
+[node name="AchievementsMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 11
+script = ExtResource("1_raj5i")
+AchievementDisplayCard = ExtResource("2_8cevc")
+
+[node name="AudioHitPlayerComponent" parent="." instance=ExtResource("2_6uduw")]
+max_distance = 5000.0
+bus = &"effects"
+hitSounds = Array[AudioStream]([ExtResource("3_4yoes")])
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 5.0
+offset_right = -3.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_type_variation = &"DarkGreenPanelBacker"
+
+[node name="Vignette" parent="PanelContainer" instance=ExtResource("4_toc68")]
+layer = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 13
+theme_override_constants/margin_top = 63
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+follow_focus = true
+
+[node name="AchievementGridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 43
+theme_override_constants/v_separation = 14
+
+[node name="MenuBar" type="PanelContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 58.0
+grow_horizontal = 2
+theme_type_variation = &"BlackPanelContainer"
+
+[node name="Label" type="Label" parent="MenuBar"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0.941176, 0.941176, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0.183898, 0.215297, 0.136224, 1)
+theme_override_font_sizes/font_size = 34
+text = "ACHIEVEMENTS"
+
+[node name="BackButton" parent="MenuBar" instance=ExtResource("5_fjx3j")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = "BACK_"
