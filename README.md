@@ -41,6 +41,7 @@ This project is written in C# however you may use gdscript as well and the syste
 2.  Open the project folder in Godot Engine.
 3.  Godot should automatically build the C# solution. If not, click **Build** in the top right corner of the Godot editor.
 4.  Implement gameplay in the game_play.tscn scene.
+5.  If you wish to add additional menus to the game see the Main.tscn scene and file for examples.
 
 ### Development
 *   **IDE**: The solution is configured for JetBrains Rider. Open the `.sln` file to start coding.

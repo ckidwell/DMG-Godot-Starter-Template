@@ -7,6 +7,7 @@ public partial class MainMenu : CanvasLayer
     [Export] private TextureButton _playButton;
     [Export] private TextureButton _settingsButton;
     [Export] private TextureButton _quitButton;
+    [Export] private TextureButton _achievementsButton;
 
     private GameEvents _gameEvents;
     private MenuSystemManager _menuSystemManager;
@@ -19,9 +20,15 @@ public partial class MainMenu : CanvasLayer
         _playButton.Pressed += OnPlayButtonPressed;
         _settingsButton.Pressed += OnSettingsButtonPressed;
         _quitButton.Pressed += OnQuitButtonPressed;
+        _achievementsButton.Pressed += OnAchievementsButtonPressed;
     }
 
-    
+    private void OnAchievementsButtonPressed()
+    {
+        _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
+        _menuSystemManager.SetCurrentMenu(MenuType.ACHIEVEMENTS);
+    }
+
 
     private void OnQuitButtonPressed()
     {

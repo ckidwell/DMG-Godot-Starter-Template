@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d18ebckhr0nuu" path="res://Media/button_r.png" id="4_3ygev"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qkbji"]
-bg_color = Color(0.19785449, 0.2316122, 0.34677336, 1)
+bg_color = Color(0.2982, 0.32662, 0.42, 1)
 
 [sub_resource type="Animation" id="Animation_1psj4"]
 length = 0.001
@@ -71,10 +71,10 @@ _data = {
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_js62u"]
-bg_color = Color(0.19785449, 0.2316122, 0.34677336, 1)
+bg_color = Color(0.2982, 0.32662, 0.42, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8shh"]
-bg_color = Color(0.19785449, 0.2316122, 0.34677336, 1)
+bg_color = Color(0.2982, 0.32662, 0.42, 1)
 
 [node name="AchievementCard" type="PanelContainer" node_paths=PackedStringArray("nameLabel", "descriptionLabel", "unlockedStatusTextureRect", "achievementIconTextureRect") groups=["upgrade_card"]]
 custom_minimum_size = Vector2(1550, 100)

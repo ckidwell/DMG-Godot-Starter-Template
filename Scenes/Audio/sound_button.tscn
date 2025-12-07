@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cja248uh8aj1s"]
+
+[ext_resource type="Script" uid="uid://etl2fr6hpbhe" path="res://Scenes/Audio/SoundButton.cs" id="1_flmc5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xp7ak"]
+bg_color = Color(0.24313726, 0.28235295, 0.41568628, 1)
+
+[node name="SoundButton" type="Button"]
+offset_right = 55.0
+offset_bottom = 15.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_xp7ak")
+text = "SoundButton"
+script = ExtResource("1_flmc5")
