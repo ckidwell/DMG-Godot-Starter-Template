@@ -7,11 +7,13 @@ public partial class AchievementsMenu : CanvasLayer
 
     [Export] private PackedScene AchievementDisplayCard;
     
+    private MenuSystemManager _menuSystemManager;
     private GameEvents _gameEvents;
     
     public override void _Ready()
     {
         _gameEvents = GetNode<GameEvents>("/root/GameEvents");
+        _menuSystemManager = GetNode<MenuSystemManager>("/root/MenuSystemManager");
         _backButton = GetNode<Button>("%BackButton");
         _backButton.Pressed += OnBackButtonPressed;
          
@@ -35,8 +37,7 @@ public partial class AchievementsMenu : CanvasLayer
     
     private void OnBackButtonPressed()
     {
-        // _gameEvents.EmitShowTransitionScreen();
-        // var waitForIt = Callable.From(QueueFree);
-        // Task.Delay(850).ContinueWith( (t) => waitForIt.CallDeferred());
+        _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
+        _menuSystemManager.SetCurrentMenu(MenuType.MAIN);
     }
 }

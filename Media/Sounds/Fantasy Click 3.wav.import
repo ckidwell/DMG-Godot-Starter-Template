@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dc8y5n34pklmm"
+path="res://.godot/imported/Fantasy Click 3.wav-9663d197571e7b34a32755c5373ca8cc.sample"
+
+[deps]
+
+source_file="res://Media/Sounds/Fantasy Click 3.wav"
+dest_files=["res://.godot/imported/Fantasy Click 3.wav-9663d197571e7b34a32755c5373ca8cc.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

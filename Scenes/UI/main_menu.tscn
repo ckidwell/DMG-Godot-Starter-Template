@@ -11,12 +11,13 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o14dv"]
 
-[node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("_visualControlParent", "_playButton", "_settingsButton", "_quitButton")]
+[node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("_visualControlParent", "_playButton", "_settingsButton", "_quitButton", "_achievementsButton")]
 script = ExtResource("1_o14dv")
 _visualControlParent = NodePath("ColorRect")
 _playButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/PlayButton")
 _settingsButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/SettingsButton")
 _quitButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/QuitButton")
+_achievementsButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/AcheivementsButton")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -116,6 +117,29 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_i2xx2")
 theme_override_font_sizes/font_size = 40
 text = "SETTINGS_"
+
+[node name="AcheivementsButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_u7lva")
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/AcheivementsButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -17.5
+offset_right = 25.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_i2xx2")
+theme_override_font_sizes/font_size = 40
+text = "ACHIEVEMENTS_"
 
 [node name="QuitButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
 layout_mode = 2

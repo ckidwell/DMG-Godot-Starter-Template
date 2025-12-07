@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dd0v6sx5alcb"]
+[gd_scene load_steps=10 format=3 uid="uid://dd0v6sx5alcb"]
 
 [ext_resource type="Script" uid="uid://uoxrg0araqbl" path="res://Scenes/Main.cs" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://bm8oa0bu021uf" path="res://Scenes/UI/main_menu.tscn" id="2_bo1nx"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dc8hvw5tw8fv6" path="res://Scenes/UI/settings.tscn" id="3_21xkr"]
 [ext_resource type="PackedScene" uid="uid://cn5a12i8j85yp" path="res://Scenes/game_play.tscn" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://cu0roq8ahja3d" path="res://Scenes/Audio/audio_stream_player.tscn" id="5_kry3j"]
+[ext_resource type="PackedScene" uid="uid://cgslyjjww64vx" path="res://Scenes/Achievements/achievementsMenu.tscn" id="5_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://dhlaqxs2pdfld" path="res://Scenes/Managers/input_manager.tscn" id="7_344ge"]
 [ext_resource type="PackedScene" uid="uid://463byhmw3e2h" path="res://Scenes/Managers/cheat_code_manager.tscn" id="8_ynf5e"]
 
@@ -18,6 +19,7 @@ script = ExtResource("1_jjgbg")
 mainMenu = ExtResource("2_bo1nx")
 settingsMenu = ExtResource("3_21xkr")
 quitGameMenu = ExtResource("3_8gbba")
+achievementsMenu = ExtResource("5_ynf5e")
 gamePlayScene = ExtResource("4_jjvhh")
 
 [node name="AudioStreamPlayer" parent="." instance=ExtResource("5_kry3j")]
