@@ -1,5 +1,7 @@
 using Godot;
 
+namespace MyGame;
+
 public partial class AchievementCard : PanelContainer
 {
 		[Export] private Label nameLabel;

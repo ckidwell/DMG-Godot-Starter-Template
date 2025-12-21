@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 
+namespace MyGame;
+
 public partial class Settings : CanvasLayer
 {
 	[Export] private Control _visualControlParent;
