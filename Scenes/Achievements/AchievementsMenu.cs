@@ -1,5 +1,7 @@
 using Godot;
 
+namespace MyGame;
+
 public partial class AchievementsMenu : CanvasLayer
 {
     private Button _backButton;

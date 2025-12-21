@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace MyGame;
+
 public partial class MainMenu : CanvasLayer
 {
     [Export] private Control _visualControlParent;

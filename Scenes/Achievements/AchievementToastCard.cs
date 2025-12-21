@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 
+namespace MyGame;
+
 public partial class AchievementToastCard : PanelContainer
 {
 			[Export] private Label nameLabel;
