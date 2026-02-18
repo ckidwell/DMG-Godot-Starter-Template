@@ -8,8 +8,8 @@ This project is written in C# however you may use gdscript as well and the syste
 ## Key Features
 
 ### Technical Stack
-*   **Engine**: Godot 4.5 (via `Godot.NET.Sdk` 4.5.0)
-*   **Framework**: .NET 8.0
+*   **Engine**: Godot 4.6.1 (via `Godot.NET.Sdk` 4.5.0)
+*   **Framework**: .NET 9.0
 *   **Language**: C# 12.0
 
 ### Template Gameplay Features

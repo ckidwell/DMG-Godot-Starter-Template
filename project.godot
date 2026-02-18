@@ -16,8 +16,9 @@ config/description="A game starter template with several features:
 - GameEvents singleton
 - random number generation system
 "
+config/tags=PackedStringArray("dmg", "template")
 run/main_scene="uid://dd0v6sx5alcb"
-config/features=PackedStringArray("4.5", "C#", "Forward Plus")
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
