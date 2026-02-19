@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 
+namespace MyGame;
 
 public partial class GameCameraShake : Camera2D
 {
