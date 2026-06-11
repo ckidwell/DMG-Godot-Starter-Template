@@ -1,7 +1,5 @@
 using Godot;
 using System;
-using System.Collections;
-using System.Threading.Tasks;
 
 
 public partial class GameCameraShake : Camera2D
@@ -18,7 +16,11 @@ public partial class GameCameraShake : Camera2D
 	private float shake_decay_rate = 0.0f;
 	private float noise_value = 0.0f;
 	private bool shaking = false;
-	
+
+	private double shakeEndTimeMsec = 0.0;
+	private float currentShakeStrength = 0.0f;
+	private float currentShakeDecayRate = 0.0f;
+
 	#endregion
 	
 	
@@ -47,40 +49,33 @@ public partial class GameCameraShake : Camera2D
 	private void OnScreenShake(float duration, float strength, float strengthDecayRate, float rampTime, float rampStrength)
 	{
 		shaking = true;
-		StartCoroutine(ScreenShake(duration, strength, strengthDecayRate ));
+		currentShakeStrength = strength;
+		currentShakeDecayRate = strengthDecayRate;
+		shakeEndTimeMsec = duration * 1000 + Time.GetTicksMsec();
 	}
 
 	public override void _Process(double delta)
 	{
-		//if (shaking) return; 
 		CameraTrack();
 
 		GlobalPosition = GlobalPosition.Lerp(targetPosition, (float)(1.0f - Mathf.Exp(-delta * 20)));
-	}
-	
-	private IEnumerable ScreenShake(float duration, float strength, float shakeDecayRate)
-	{
-	
-		var endTime = duration * 1000 +  Time.GetTicksMsec();
-		
-		while (endTime > Time.GetTicksMsec())
-		{
-			strength = float.Lerp(strength, 0, shakeDecayRate * (float)GetProcessDeltaTime());
 
-			Offset = GetRandomOffset(strength);
-			yield return  GetTree().CreateTimer(.05);
-		}
-		
-		shaking = false;
-		yield return null;
+		UpdateShake(delta);
 	}
-	private static async Task StartCoroutine(IEnumerable objects)
+
+	private void UpdateShake(double delta)
 	{
-		var mainLoopTree = Engine.GetMainLoop();
-		foreach (var _ in objects)
+		if (!shaking) return;
+
+		if (Time.GetTicksMsec() >= shakeEndTimeMsec)
 		{
-			await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
+			shaking = false;
+			Offset = Vector2.Zero;
+			return;
 		}
+
+		currentShakeStrength = float.Lerp(currentShakeStrength, 0, currentShakeDecayRate * (float)delta);
+		Offset = GetRandomOffset(currentShakeStrength);
 	}
 
 	private Vector2 GetRandomOffset(float strength)

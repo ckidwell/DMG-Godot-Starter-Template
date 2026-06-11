@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Threading.Tasks;
 
 public partial class AchievementToastCard : PanelContainer
 {
@@ -56,9 +55,8 @@ public partial class AchievementToastCard : PanelContainer
 		        if (currentColor.A >= .02) return;
 
 		        dispose = true;
-		        
-		        var waitForIt = Callable.From(QueueFree);
-		        Task.Delay(150).ContinueWith( (t) => waitForIt.CallDeferred());
+
+		        GetTree().CreateTimer(0.15).Timeout += QueueFree;
 	        }
 	        private void OnTimerTimeout()
 	        {
