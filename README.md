@@ -5,6 +5,10 @@ This project is a game starter template for use with the **Godot Engine** with C
 
 This project is written in C# however you may use gdscript as well and the systems inp lace will not be affected or interfere.
 
+## AI Usage
+
+Some sample content in this project was generated using AI - you may replace that content and be AI generation free. I do use 'code assit' during programming but will not use 'generative' AI for this project. At the inital time of this writing only the sample music is AI generated.  Any other content added will be marked as AI but not always noted in this disclaimer.
+
 ## Key Features
 
 ### Technical Stack
@@ -24,7 +28,8 @@ This project is written in C# however you may use gdscript as well and the syste
          * Windowed Mode Toggle (only works in real build)
 *  GameEvents singleton - for dispatching game events
 *  Random NumberManager singleton 
-*  Sound Effects and Music placeholders (8-bit BXSFR style / AI Music)
+*  Sound Effects  (8-bit BXSFR style)
+*  Music placeholders (AI Music)
 *  Localization Support for the menu system in 5 languages (English, Spanish, French, German, Japanese)
 *  Achievement System
 *  Toast style Notification system with cards that fade over time
