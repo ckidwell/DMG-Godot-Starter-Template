@@ -28,7 +28,7 @@ This project is written in C# however you may use gdscript as well and the syste
 *  Localization Support for the menu system in 5 languages (English, Spanish, French, German, Japanese)
 *  Achievement System
 *  Toast style Notification system with cards that fade over time
-*  Save Game System - serialize data to JSON in user directory
+*  Save Game System - serialize data to JSON in user directory (implemented in the `ProgressionManager` singleton)
 
 ## Getting Started
 
