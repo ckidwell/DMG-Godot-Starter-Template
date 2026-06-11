@@ -28,6 +28,12 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 		_gameEvents.PlayAudioStream += OnPlayAudioStream;
 	}
 
+	public override void _ExitTree()
+	{
+		if (_gameEvents == null) return;
+		_gameEvents.PlayAudioStream -= OnPlayAudioStream;
+	}
+
 	private void OnPlayAudioStream(string soundEventName)
 	{
 		switch (soundEventName)

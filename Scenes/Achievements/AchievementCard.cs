@@ -25,7 +25,13 @@ public partial class AchievementCard : PanelContainer
     		MouseExited += OnMouseExited;
     		UpdateLockedLabel();
     	}
-    
+
+    	public override void _ExitTree()
+    	{
+    		if (_gameEvents == null) return;
+    		_gameEvents.SaveGameDataUpdated -= OnSaveGameDataUpdated;
+    	}
+
     	private void OnSaveGameDataUpdated(SaveGameDataVariant data)
     	{
     		if (data.SaveGameData.achievementData.achievementsUnlocked.TryGetValue(_achievement, out var ach))

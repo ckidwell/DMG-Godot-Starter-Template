@@ -47,7 +47,11 @@ public partial class Settings : CanvasLayer
 		UpdateDisplay();
 	}
 
-
+	public override void _ExitTree()
+	{
+		if (_gameEvents == null) return;
+		_gameEvents.SaveGameDataUpdated -= OnSaveGameDataUpdated;
+	}
 
 	private void OnSaveGameDataUpdated(SaveGameDataVariant data)
 	{

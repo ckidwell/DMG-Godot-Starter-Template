@@ -23,7 +23,13 @@ public partial class PoolSpawner : Node
         entitiesLayer =  GetTree().GetFirstNodeInGroup("entities_layer");
     }
 
-  
+    public override void _ExitTree()
+    {
+        if (_gameEvents == null) return;
+        _gameEvents.RePoolMe -= OnRepoolMe;
+    }
+
+
     public void SetAttachNode(Node2D node2D)
     {
         useOptionalAttachNode = true;
