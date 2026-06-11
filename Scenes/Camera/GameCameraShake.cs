@@ -38,6 +38,12 @@ public partial class GameCameraShake : Camera2D
 		MakeCurrent();
 	}
 
+	public override void _ExitTree()
+	{
+		if (_gameEvents == null) return;
+		_gameEvents.ScreenShake -= OnScreenShake;
+	}
+
 	private void OnScreenShake(float duration, float strength, float strengthDecayRate, float rampTime, float rampStrength)
 	{
 		shaking = true;

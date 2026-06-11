@@ -38,6 +38,16 @@ public partial class ProgressionManager : Node
 		};
 	}
 
+	public override void _ExitTree()
+	{
+		if (_gameEvents == null) return;
+		_gameEvents.SupportedLanguageUpdated -= OnSupportedLanguageUpdated;
+		_gameEvents.Died -= OnDied;
+		_gameEvents.CurrencyPickedUp -= OnCurrencyPickup;
+		_gameEvents.SoundVolume -= OnSoundVolumeChanged;
+		_gameEvents.MusicVolume -= OnMusicVolumeChanged;
+	}
+
 	private void OnMusicVolumeChanged(float amount)
 	{
 		_saveGameData.musicVolume = amount;

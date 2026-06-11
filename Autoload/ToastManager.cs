@@ -13,7 +13,13 @@ public partial class ToastManager : CanvasLayer
         _gameEvents = GetNode<GameEvents>("/root/GameEvents");
         _gameEvents.AchievementEarned += OnAchievementEarned;
     }
-    
+
+    public override void _ExitTree()
+    {
+        if (_gameEvents == null) return;
+        _gameEvents.AchievementEarned -= OnAchievementEarned;
+    }
+
     private void OnAchievementEarned(AchievementDescriptionVariant adv)
     {
         var _CardInstance  = AchievementToastCard.Instantiate() as AchievementToastCard;
