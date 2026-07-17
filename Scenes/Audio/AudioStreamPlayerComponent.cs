@@ -63,53 +63,33 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 
 	private void PlayRandomSoundForStreamPlayer(AudioStream[] sounds, bool randomPitch, string soundEventName)
 	{
-		if (sounds.Length == 0 || sounds == null) return;
+		if (sounds == null || sounds.Length == 0) return;
 
-		if (randomPitch)
+		var player = soundEventName switch
 		{
-			PitchScale = (float)GD.RandRange(minPitch, maxPitch);
-		}
-		else
-		{
-			PitchScale = 1f;
-		}
+			GameConstants.S_EXPLOSION => explosionPlayer,
+			GameConstants.S_HIT => hitPlayer,
+			GameConstants.S_XP_GEM_COLLECTED => xpPlayer,
+			GameConstants.S_BULLET_FIRED => bulletPlayer,
+			_ => null
+		};
+
+		if (player == null) return;
+		
+		player.PitchScale = randomPitch ? (float)GD.RandRange(minPitch, maxPitch) : 1f;
+
 		var soundToPlay = GD.RandRange(0, sounds.Length - 1);
-
-		switch (soundEventName)
-		{
-			case GameConstants.S_EXPLOSION:
-				explosionPlayer.Stream = sounds[soundToPlay];
-				explosionPlayer.Play();
-				return;
-			case GameConstants.S_HIT:
-				hitPlayer.Stream = sounds[soundToPlay];
-				hitPlayer.Play();
-				return;
-			case GameConstants.S_XP_GEM_COLLECTED:
-				xpPlayer.Stream = sounds[soundToPlay];
-				xpPlayer.Play();
-				return;
-			case GameConstants.S_BULLET_FIRED:
-				bulletPlayer.Stream = sounds[soundToPlay];
-				bulletPlayer.Play();
-				return;
-		}
+		player.Stream = sounds[soundToPlay];
+		player.Play();
 	}
 
 	
 	private void PlayRandomSound(AudioStream[] sounds, AudioStreamPlayer2D player,bool randomPitch = false )
 	{
-		if (sounds.Length == 0 || sounds == null) return;
-
-		if (randomPitch)
-		{
-			PitchScale = (float)GD.RandRange(minPitch, maxPitch);
-		}
-		else
-		{
-			PitchScale = 1f;
-		}
+		if (sounds == null || sounds.Length == 0) return;
 		
+		player.PitchScale = randomPitch ? (float)GD.RandRange(minPitch, maxPitch) : 1f;
+
 		var soundToPlay = GD.RandRange(0, sounds.Length - 1);
 		player.Stream =  sounds[soundToPlay];
 		player.Play();
