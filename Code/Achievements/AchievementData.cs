@@ -1,10 +1,9 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 
 namespace DMGStarterTemplate;
 
-public partial class AchievementData : Node
+// Plain serializable DTO — see SaveGameData for why this is not a Godot Node.
+public class AchievementData
 {
     public Dictionary<Achievements, bool> achievementsUnlocked = new()
     {

@@ -1,9 +1,10 @@
 using Godot;
-using System;
 
 namespace DMGStarterTemplate;
 
-public partial class MenuTypeVariant : Node
+// RefCounted (not Node) so these short-lived signal-payload wrappers free themselves
+// instead of leaking — a Node that is never added to the tree is never freed.
+public partial class MenuTypeVariant : RefCounted
 {
     public MenuType menuType;
 }

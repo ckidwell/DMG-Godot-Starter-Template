@@ -70,7 +70,6 @@ public partial class Settings : CanvasLayer
 
 	private void OnWindowedCheckButtonPressed()
 	{
-		GD.Print("Windowed check button pressed");
 		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		
 		var mode = DisplayServer.WindowGetMode();

@@ -1,10 +1,10 @@
-using Godot;
-using System;
-
 namespace DMGStarterTemplate;
 
-public partial class SaveGameData : Node
+// Plain serializable DTO. Deliberately NOT a Godot Node: deriving from Node would
+// serialize dozens of engine properties (including a raw NativeInstance pointer) into the save file.
+public class SaveGameData
 {
+    public float mainVolume = .5f;
     public float musicVolume = .5f;
     public float soundVolume = .5f;
     public int currency = 0;

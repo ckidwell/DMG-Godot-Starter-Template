@@ -20,7 +20,13 @@ public partial class ProgressionManager : Node
 	
 	private GameEvents _gameEvents;
 
-	
+	// Volume sliders fire ValueChanged many times per drag; coalesce those into a single
+	// write shortly after the last change instead of writing the file on every frame.
+	private Timer _saveDebounceTimer;
+	private bool _pendingSave;
+	private const double SaveDebounceSeconds = 0.5;
+
+
 	public override void _Ready()
 	{
 		SAVE_FILE_PATH = ProjectSettings.GlobalizePath(SAVE_FILE_PATH);
@@ -31,35 +37,65 @@ public partial class ProgressionManager : Node
 		_gameEvents.CurrencyPickedUp += OnCurrencyPickup;
 		_gameEvents.SoundVolume += OnSoundVolumeChanged;
 		_gameEvents.MusicVolume += OnMusicVolumeChanged;
-	
+		_gameEvents.MainVolume += OnMainVolumeChanged;
+
+		_saveDebounceTimer = new Timer { OneShot = true, WaitTime = SaveDebounceSeconds };
+		AddChild(_saveDebounceTimer);
+		_saveDebounceTimer.Timeout += OnSaveDebounceTimeout;
+
 		LoadSaveDataFile();
 		
 		if (_saveGameData.achievementData.achievementsUnlocked.TryGetValue(Achievements.WELCOME_FIRST_TIME, out var ach))
 		{
 			AchievementUnlocked(Achievements.WELCOME_FIRST_TIME);
 		};
+
+		ApplyLoadedSettings();
+	}
+
+	// Push the just-loaded save data back out so it actually takes effect for the session.
+	// Without this the audio buses stay at their defaults, and the first visit to the Settings
+	// menu overwrites the saved volumes with those defaults, so they never persist across sessions.
+	private void ApplyLoadedSettings()
+	{
+		SessionConfigurationManager.SetBusVolumePercent(GameConstants.MAIN_BUS, _saveGameData.mainVolume);
+		SessionConfigurationManager.SetBusVolumePercent(GameConstants.MUSIC_BUS, _saveGameData.musicVolume);
+		SessionConfigurationManager.SetBusVolumePercent(GameConstants.EFFECTS_BUS, _saveGameData.soundVolume);
+
+		// Broadcast so any menu or card already listening refreshes from the loaded data.
+		_gameEvents.EmitSaveGameDataUpdated(new SaveGameDataVariant(_saveGameData));
 	}
 
 	public override void _ExitTree()
 	{
+		// Persist any change still waiting in the debounce window before we shut down.
+		FlushPendingSave();
+
 		if (_gameEvents == null) return;
 		_gameEvents.SupportedLanguageUpdated -= OnSupportedLanguageUpdated;
 		_gameEvents.Died -= OnDied;
 		_gameEvents.CurrencyPickedUp -= OnCurrencyPickup;
 		_gameEvents.SoundVolume -= OnSoundVolumeChanged;
 		_gameEvents.MusicVolume -= OnMusicVolumeChanged;
+		_gameEvents.MainVolume -= OnMainVolumeChanged;
+	}
+
+	private void OnMainVolumeChanged(float amount)
+	{
+		_saveGameData.mainVolume = amount;
+		RequestSave();
 	}
 
 	private void OnMusicVolumeChanged(float amount)
 	{
 		_saveGameData.musicVolume = amount;
-		WriteSaveDataFile();
+		RequestSave();
 	}
 
 	private void OnSoundVolumeChanged(float amount)
 	{
 		_saveGameData.soundVolume = amount;
-		WriteSaveDataFile();
+		RequestSave();
 	}
 
 	private void OnSupportedLanguageUpdated(SupportedLanguagesVariant lang)
@@ -142,18 +178,36 @@ public partial class ProgressionManager : Node
 			return;
 		}
 		
-		var saveFile = ReadFromJsonFile<SaveGameData>(SAVE_FILE_PATH);
-		_saveGameData = saveFile;
+		try
+		{
+			var saveFile = ReadFromJsonFile<SaveGameData>(SAVE_FILE_PATH);
+
+			// DeserializeObject returns null for empty or "null" file contents.
+			if (saveFile == null)
+			{
+				GD.PushWarning("Save file was empty or invalid; starting from defaults.");
+				SeedData();
+				return;
+			}
+
+			_saveGameData = saveFile;
+		}
+		catch (Exception e)
+		{
+			// A corrupt save must never crash startup. Keep the default _saveGameData and carry on.
+			GD.PushError($"Failed to load save file, starting from defaults: {e.Message}");
+			SeedData();
+		}
 		//
 		// // this will seed the data on first time use
 		// if (_saveGameData.upgradesSaveData.Count != 0) return;
 		//
 		// foreach (var metaUpgradeData in MetaUpgradeList.GetMetaUpgrades())
 		// {
-		// 	_saveGameData.upgradesSaveData.Add(metaUpgradeData.id,metaUpgradeData);    
+		// 	_saveGameData.upgradesSaveData.Add(metaUpgradeData.id,metaUpgradeData);
 		// }
-		
-		
+
+
 	}
 
 	private void SeedData()
@@ -167,8 +221,29 @@ public partial class ProgressionManager : Node
 		// 	_saveGameData.upgradesSaveData.Add(metaUpgradeData.id,metaUpgradeData);    
 		// }
 	}
+	// Debounced save: (re)start the countdown so the file is written once changes stop for
+	// SaveDebounceSeconds. Prevents the per-frame write storm caused by dragging a volume slider.
+	private void RequestSave()
+	{
+		_pendingSave = true;
+		_saveDebounceTimer.Start();
+	}
+
+	private void OnSaveDebounceTimeout()
+	{
+		if (_pendingSave) WriteSaveDataFile();
+	}
+
+	private void FlushPendingSave()
+	{
+		if (_pendingSave) WriteSaveDataFile();
+	}
+
 	public void WriteSaveDataFile()
 	{
+		// Any pending debounced write is now satisfied by this immediate write.
+		_pendingSave = false;
+		_saveDebounceTimer?.Stop();
 		WriteToJsonFile(SAVE_FILE_PATH, _saveGameData);
 	}
 	
@@ -182,28 +257,31 @@ public partial class ProgressionManager : Node
 	#region JSON_SAVER
 
 	/// <summary>
-	/// Writes the given object instance to a Json file.
+	/// Serializes the given object instance to JSON and writes it atomically.
 	/// <para>Object type must have a parameterless constructor.</para>
 	/// <para>Only Public properties and variables will be written to the file. These can be any type though, even other classes.</para>
 	/// <para>If there are public properties/variables that you do not want written to the file, decorate them with the [JsonIgnore] attribute.</para>
+	/// <para>The data is written to a temporary file first and then swapped into place, so an interrupted
+	/// write (crash, power loss, full disk) can never leave a truncated or corrupt save file behind.</para>
 	/// </summary>
 	/// <typeparam name="T">The type of object being written to the file.</typeparam>
 	/// <param name="filePath">The file path to write the object instance to.</param>
 	/// <param name="objectToWrite">The object instance to write to the file.</param>
-	/// <param name="append">If false the file will be overwritten if it already exists. If true the contents will be appended to the file.</param>
-	private static void WriteToJsonFile<T>(string filePath, T objectToWrite, bool append = false) where T : new()
+	private static void WriteToJsonFile<T>(string filePath, T objectToWrite) where T : new()
 	{
-		TextWriter writer = null;
-		try
+		var contentsToWriteToFile = JsonConvert.SerializeObject(objectToWrite);
+
+		var tempFilePath = filePath + ".tmp";
+		File.WriteAllText(tempFilePath, contentsToWriteToFile);
+
+		if (File.Exists(filePath))
 		{
-			var contentsToWriteToFile = JsonConvert.SerializeObject(objectToWrite);
-			writer = new StreamWriter(filePath, append);
-			writer.Write(contentsToWriteToFile);
+			// File.Replace is atomic on the same volume and keeps the original intact until the swap succeeds.
+			File.Replace(tempFilePath, filePath, null);
 		}
-		finally
+		else
 		{
-			if (writer != null)
-				writer.Close();
+			File.Move(tempFilePath, filePath);
 		}
 	}
 
