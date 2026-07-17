@@ -14,7 +14,7 @@ public partial class AudioHitPlayerComponent : AudioStreamPlayer2D
 	
     public void PlayRandomHit()
     {
-        if (hitSounds.Length == 0 || hitSounds == null) return;
+        if (hitSounds == null || hitSounds.Length == 0) return;
 
         if (randomizePitch)
         {

@@ -96,7 +96,7 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 	}
 	private void PlaySound(AudioStream[] sounds, int indexOfSound, bool randomPitch = false)
 	{
-		if (sounds.Length == 0 || sounds == null) return;
+		if (sounds == null || sounds.Length == 0) return;
 
 		if (randomPitch)
 		{
