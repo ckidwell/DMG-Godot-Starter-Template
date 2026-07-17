@@ -33,6 +33,7 @@ Some sample content in this project was generated using AI - you may replace tha
 *  Localization Support for the menu system in 5 languages (English, Spanish, French, German, Japanese)
 *  Achievement System
 *  Toast style Notification system with cards that fade over time
+    * **Demo:** pressing **Play** on the main menu fires the "Welcome" achievement toast every time, so you can see what an earned achievement and its notification look like. This is intentional demo behavior — it bypasses the normal one-time unlock in `ProgressionManager.AchievementUnlocked()`. Replace it with your own unlock logic (see `MainMenu.OnPlayButtonPressed`).
 *  Save Game System - serialize data to JSON in user directory (implemented in the `ProgressionManager` singleton)
 
 ## Getting Started

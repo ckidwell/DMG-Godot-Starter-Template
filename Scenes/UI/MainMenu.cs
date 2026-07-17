@@ -46,6 +46,10 @@ public partial class MainMenu : CanvasLayer
 
     private void OnPlayButtonPressed()
     {
+        // DEMO: fire the achievement toast on every Play press so template users can see what an
+        // earned achievement and its toast notification look like. This deliberately bypasses
+        // ProgressionManager.AchievementUnlocked() — that path persists the unlock and would only
+        // ever show the toast once. Replace this with real unlock logic in your own game.
         _gameEvents.EmitAchievementEarned(new AchievementDescriptionVariant( AchievementDescription.GetDescriptionForAchievement(Achievements.WELCOME_FIRST_TIME)));
         _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
         _menuSystemManager.SetCurrentMenu(MenuType.PLAY);
