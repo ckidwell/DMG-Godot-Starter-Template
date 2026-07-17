@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace MyGame;
+
 public partial class InputManager : Node
 {
     private GameEvents _gameEvents;

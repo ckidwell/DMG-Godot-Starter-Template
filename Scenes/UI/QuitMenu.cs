@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace MyGame;
+
 public partial class QuitMenu : CanvasLayer
 {
     [Export] private TextureButton _confirmButton;

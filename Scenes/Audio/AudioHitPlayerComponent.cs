@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace MyGame;
+
 public partial class AudioHitPlayerComponent : AudioStreamPlayer2D
 {
     [Export] private AudioStream[] hitSounds;

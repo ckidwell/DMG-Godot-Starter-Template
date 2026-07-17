@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace MyGame;
+
 public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 {
     [Export] private AudioStream[] xpSounds;

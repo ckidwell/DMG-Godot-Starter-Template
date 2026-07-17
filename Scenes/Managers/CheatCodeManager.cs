@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace MyGame;
+
 public partial class CheatCodeManager : Node
 {
     [Export] private bool _cheatEnabled = false;
