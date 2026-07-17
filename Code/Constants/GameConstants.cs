@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace DMGStarterTemplate;
+
 public partial class GameConstants : Node
 {
     public static Vector2 DESPAWN_LOCATION { get; private set; } = new Vector2(+10000, +10000);

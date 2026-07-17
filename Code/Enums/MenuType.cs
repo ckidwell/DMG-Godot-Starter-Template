@@ -1,7 +1,9 @@
 using Godot;
 using System;
 
-public enum MenuType 
+namespace DMGStarterTemplate;
+
+public enum MenuType
 {
     ACHIEVEMENTS,
     MAIN,

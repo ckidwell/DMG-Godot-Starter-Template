@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace DMGStarterTemplate;
+
 public partial class RandomNumberManager : Node
 {
     private RandomNumberGenerator _randomNumberGenerator = new RandomNumberGenerator();

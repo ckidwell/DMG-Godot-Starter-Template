@@ -1,3 +1,5 @@
+namespace DMGStarterTemplate;
+
 public enum SupportedLanguages
 {
     EN,

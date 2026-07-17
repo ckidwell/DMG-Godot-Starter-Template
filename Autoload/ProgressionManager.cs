@@ -4,6 +4,8 @@ using System.IO;
 using Newtonsoft.Json;
 using FileAccess = Godot.FileAccess;
 
+namespace DMGStarterTemplate;
+
 public partial class ProgressionManager : Node
 {
 	

@@ -1,6 +1,6 @@
 using Godot;
 
-namespace MyGame;
+namespace DMGStarterTemplate;
 
 public partial class AchievementsMenu : CanvasLayer
 {

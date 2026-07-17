@@ -1,4 +1,6 @@
-public enum Achievements 
+namespace DMGStarterTemplate;
+
+public enum Achievements
 {
     NONE,
     WELCOME_FIRST_TIME,

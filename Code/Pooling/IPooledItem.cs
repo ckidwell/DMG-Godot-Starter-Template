@@ -1,3 +1,5 @@
+namespace DMGStarterTemplate;
+
 public interface IPooledItem
 {
     public void Activate();

@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+namespace DMGStarterTemplate;
+
 public partial class PoolSpawner : Node
 {
      [Export] public PackedScene pooledScene;

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace MyGame;
+namespace DMGStarterTemplate;
 
 public partial class Settings : CanvasLayer
 {

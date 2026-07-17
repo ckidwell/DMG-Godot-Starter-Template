@@ -1,6 +1,8 @@
 using Godot;
 using System.Collections.Generic;
 
+namespace DMGStarterTemplate;
+
 public partial class MenuSystemManager : Control
 {
     

@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace DMGStarterTemplate;
+
 public partial class GameEvents : Node
 {
     [Signal]

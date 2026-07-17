@@ -1,5 +1,6 @@
 using Godot;
 
+namespace DMGStarterTemplate;
 
 public partial class SessionConfigurationManager : Node
 {

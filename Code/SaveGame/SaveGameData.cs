@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace DMGStarterTemplate;
+
 public partial class SaveGameData : Node
 {
     public float musicVolume = .5f;

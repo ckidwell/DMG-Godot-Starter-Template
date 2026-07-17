@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace DMGStarterTemplate;
+
 public class AchievementDescription
 {
     public Achievements achievement;
