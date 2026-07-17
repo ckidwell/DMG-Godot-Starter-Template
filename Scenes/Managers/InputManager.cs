@@ -10,6 +10,9 @@ public partial class InputManager : Node
     
     public override void _Ready()
     {
+        // Keep handling input while the tree is paused, so pause can also un-pause.
+        ProcessMode = ProcessModeEnum.Always;
+
         _gameEvents = GetNode<GameEvents>("/root/GameEvents");
         _menuSystemManager = GetNode<MenuSystemManager>("/root/MenuSystemManager");
     }
@@ -18,7 +21,7 @@ public partial class InputManager : Node
     {
         if (@event.IsActionPressed("pause"))
         {
-            _menuSystemManager.PushMenu(MenuType.PAUSE_QUIT);
+            _menuSystemManager.ToggleMenu(MenuType.PAUSE_QUIT);
         }
     }
 }

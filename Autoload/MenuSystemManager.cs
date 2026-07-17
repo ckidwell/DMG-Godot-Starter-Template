@@ -21,25 +21,34 @@ public partial class MenuSystemManager : Control
 
     public void InitializeMenu(MenuType mt, Node menuNode)
     {
+        // This manager is an autoload, so it outlives the Main scene. If Main is ever reloaded
+        // and re-registers menus, Dictionary.Add would throw on the duplicate key — keep the
+        // originally registered instance and free the redundant one instead.
+        if (_menuNodes.ContainsKey(mt))
+        {
+            menuNode.QueueFree();
+            return;
+        }
+
         _menuNodes.Add(mt, menuNode);
     }
-    
+
     public void SetCurrentMenu(MenuType mt)
     {
-
-        var removeNode = _menuNodes[_currentMenuType];
-        
-        if (removeNode.IsInsideTree())
+        // On the first call _currentMenuType is NONE (nothing shown yet), so there is nothing to remove.
+        if (_currentMenuType != MenuType.NONE &&
+            _menuNodes.TryGetValue(_currentMenuType, out var removeNode) &&
+            removeNode.IsInsideTree())
         {
-            RemoveChild(removeNode); 
+            RemoveChild(removeNode);
         }
-        
+
         _currentMenuType = mt;
 
-        var addNode = _menuNodes[mt];
-        
-        AddChild(addNode);
-        
+        if (_menuNodes.TryGetValue(mt, out var addNode))
+        {
+            AddChild(addNode);
+        }
     }
     
     public void EmitSetMenu(MenuTypeVariant mtv)
@@ -48,13 +57,34 @@ public partial class MenuSystemManager : Control
     }
 
 
+    // Show the menu if it is hidden, hide it if it is shown. Used for overlay menus like pause.
+    public void ToggleMenu(MenuType mt)
+    {
+        if (!_menuNodes.TryGetValue(mt, out var menuNode)) return;
+
+        if (menuNode.IsInsideTree())
+        {
+            RemoveChild(menuNode);
+        }
+        else
+        {
+            AddChild(menuNode);
+        }
+    }
+
     public void PushMenu(MenuType mt)
     {
-        AddChild(_menuNodes[mt]);
+        if (_menuNodes.TryGetValue(mt, out var menuNode))
+        {
+            AddChild(menuNode);
+        }
     }
 
     public void PopMenu(MenuType mt)
     {
-        RemoveChild(_menuNodes[mt]);
+        if (_menuNodes.TryGetValue(mt, out var menuNode))
+        {
+            RemoveChild(menuNode);
+        }
     }
 }

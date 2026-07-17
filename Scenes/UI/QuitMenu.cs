@@ -13,11 +13,26 @@ public partial class QuitMenu : CanvasLayer
     
     public override void _Ready()
     {
+        // Stay interactive while the game tree is paused so the buttons still respond.
+        ProcessMode = ProcessModeEnum.Always;
+
         _gameEvents = GetNode<GameEvents>("/root/GameEvents");
         _menuSystemManager = GetNode<MenuSystemManager>("/root/MenuSystemManager");
-        
+
         _confirmButton.Pressed += OnConfirmButtonPressed;
         _cancelButton.Pressed += OnCancelButtonPressed;
+    }
+
+    // Pausing/unpausing is driven by this menu entering/leaving the tree, so every open and
+    // close path (pause toggle, Cancel, Confirm) is covered by a single pair of hooks.
+    public override void _EnterTree()
+    {
+        GetTree().Paused = true;
+    }
+
+    public override void _ExitTree()
+    {
+        GetTree().Paused = false;
     }
 
     
