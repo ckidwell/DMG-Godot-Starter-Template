@@ -6,7 +6,6 @@ namespace DMGStarterTemplate;
 public partial class Settings : CanvasLayer
 {
 	[Export] private Control _visualControlParent;
-    private Button _windowModeButton;
     private CheckButton _windowedCheckButton;
 	private TextureButton _backButton;
 	private HSlider _mainVolumeSlider;
@@ -17,8 +16,6 @@ public partial class Settings : CanvasLayer
 	private SaveGameDataVariant saveGameData;
 	private GameEvents _gameEvents;
 	private MenuSystemManager _menuSystemManager;
-	
-	bool fullscreen = true;
 
 	public override void _Ready()
 	{
@@ -71,18 +68,20 @@ public partial class Settings : CanvasLayer
 	private void OnWindowedCheckButtonPressed()
 	{
 		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
-		
-		var mode = DisplayServer.WindowGetMode();
-		
-		if (mode != DisplayServer.WindowGetMode())
+
+		var isWindowed = DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed;
+
+		if (isWindowed)
 		{
-			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen); 
+			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
 		}
 		else
 		{
 			DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, false);
 			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
 		}
+
+		UpdateWindowModeLabel();
 	}
 
 	
@@ -119,13 +118,19 @@ public partial class Settings : CanvasLayer
 		return Mathf.DbToLinear(volume_db);
 	}
 	
+	private void UpdateWindowModeLabel()
+	{
+		// Label reads as the action the button will perform, so it shows the opposite of the current mode.
+		_windowModeLabel.Text =
+			DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed
+				? "SET FULLSCREEN"
+				: "SET WINDOWED";
+	}
+
 	private void UpdateDisplay()
 	{
-		_windowModeLabel.Text = "SET WINDOWED";
-		
-		if(DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed)
-			_windowModeLabel.Text = "SET FULLSCREEN";
-		
+		UpdateWindowModeLabel();
+
 		_soundEffectsSlider.Value = GetBusVolumePercent(GameConstants.EFFECTS_BUS);
 		_musicSlider.Value = GetBusVolumePercent(GameConstants.MUSIC_BUS);
 		_mainVolumeSlider.Value = GetBusVolumePercent(GameConstants.MAIN_BUS);
