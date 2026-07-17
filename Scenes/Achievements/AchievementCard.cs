@@ -38,7 +38,8 @@ public partial class AchievementCard : PanelContainer
     	{
     		if (data.SaveGameData.achievementData.achievementsUnlocked.TryGetValue(_achievement, out var ach))
     		{
-    			_achievementLocked = ach;
+    			// ach is the *unlocked* flag, so locked is its inverse.
+    			_achievementLocked = !ach;
     		}
     		UpdateLockedLabel();
     	}

@@ -115,6 +115,9 @@ public partial class ProgressionManager : Node
 		_saveGameData.achievementData.achievementsUnlocked[achievement] = true;
 		WriteSaveDataFile();
 		_gameEvents.EmitAchievementEarned(new AchievementDescriptionVariant(AchievementDescription.GetDescriptionForAchievement(achievement)));
+
+		// Notify any live UI (e.g. an open achievements menu) that the saved data changed.
+		_gameEvents.EmitSaveGameDataUpdated(new SaveGameDataVariant(_saveGameData));
 	}
 
 
