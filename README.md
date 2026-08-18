@@ -12,7 +12,7 @@ Some sample content in this project was generated using AI - you may replace tha
 ## Key Features
 
 ### Technical Stack
-*   **Engine**: Godot 4.6.1 (via `Godot.NET.Sdk` 4.5.0)
+*   **Engine**: Godot 4.7
 *   **Framework**: .NET 9.0
 *   **Language**: C# 12.0
 
