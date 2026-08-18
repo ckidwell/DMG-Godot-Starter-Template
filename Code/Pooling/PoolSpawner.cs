@@ -49,45 +49,37 @@ public partial class PoolSpawner : Node
     
     public Node2D GetItem()
     {
-
-        return GetStackBasedItem();
-
-    }
-    private Node2D GetStackBasedItem()
-    {
-        if (_pooledStack.Count > 5)
+        // Reuse a pooled item whenever one is available; only instantiate when the pool is empty.
+        if (_pooledStack.Count > 0)
         {
-            var repooled = _pooledStack.Pop();
-            _activeItems.Add(repooled);
-            
-            repooled.SetProcess(true);
-            var ipoolitem = repooled as IPooledItem;
-            ipoolitem?.Activate();
+            var reused = _pooledStack.Pop();
 
+            GetSpawnParent().AddChild(reused);
+            reused.SetProcess(true);
+            reused.SetPhysicsProcess(true);
+            reused.Visible = true;
+            (reused as IPooledItem)?.Activate();
+
+            _activeItems.Add(reused);
             UpdateCounts();
-            return repooled;
+            return reused;
         }
 
-        var spawned =  pooledScene.Instantiate() as Node2D;
-        var pooledItem = spawned as IPooledItem;
-        
-        var myid = this.GetInstanceId();
-        pooledItem?.SetPoolSpawner(myid);
+        var spawned = pooledScene.Instantiate<Node2D>();
+        (spawned as IPooledItem)?.SetPoolSpawner(GetInstanceId());
 
-        if (useOptionalAttachNode)
-        {
-            attachNode.AddChild(spawned);
-        }
-        else
-        {
-            entitiesLayer.AddChild(spawned);    
-        }
-        
+        GetSpawnParent().AddChild(spawned);
+        (spawned as IPooledItem)?.Activate();
+
         _activeItems.Add(spawned);
         UpdateCounts();
         return spawned;
     }
-  
+
+    private Node GetSpawnParent()
+    {
+        return useOptionalAttachNode ? attachNode : entitiesLayer;
+    }
 
     private void UpdateCounts()
     {
@@ -97,9 +89,21 @@ public partial class PoolSpawner : Node
 
     public void PoolItem(Node2D item)
     {
-        item.SetProcess(false);
-        _activeItems.Remove(item);
-        _pooledStack.Push(item);
+        // Guard against pooling the same item twice, which would later hand one node to two callers.
+        if (_pooledStack.Contains(item)) return;
 
+        _activeItems.Remove(item);
+
+        // Let the item reset its own state (disable collision, stop effects, etc.).
+        (item as IPooledItem)?.DeSpawn();
+
+        item.SetProcess(false);
+        item.SetPhysicsProcess(false);
+
+        // Remove from the tree so a pooled item no longer renders, processes, or collides.
+        item.GetParent()?.RemoveChild(item);
+
+        _pooledStack.Push(item);
+        UpdateCounts();
     }
 }

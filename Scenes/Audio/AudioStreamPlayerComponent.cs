@@ -40,6 +40,9 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 	{
 		switch (soundEventName)
 		{
+			case GameConstants.S_EXPLOSION:
+				PlayRandomSoundForStreamPlayer(explosionSounds, true, soundEventName);
+				return;
 			case GameConstants.S_HIT:
 				PlayRandomSoundForStreamPlayer(hitSounds, true,soundEventName);
 				return;

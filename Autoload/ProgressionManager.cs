@@ -45,10 +45,8 @@ public partial class ProgressionManager : Node
 
 		LoadSaveDataFile();
 		
-		if (_saveGameData.achievementData.achievementsUnlocked.TryGetValue(Achievements.WELCOME_FIRST_TIME, out var ach))
-		{
-			AchievementUnlocked(Achievements.WELCOME_FIRST_TIME);
-		};
+		// AchievementUnlocked already no-ops if it's unknown or already unlocked.
+		AchievementUnlocked(Achievements.WELCOME_FIRST_TIME);
 
 		ApplyLoadedSettings();
 	}
@@ -58,9 +56,11 @@ public partial class ProgressionManager : Node
 	// menu overwrites the saved volumes with those defaults, so they never persist across sessions.
 	private void ApplyLoadedSettings()
 	{
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.MAIN_BUS, _saveGameData.mainVolume);
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.MUSIC_BUS, _saveGameData.musicVolume);
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.EFFECTS_BUS, _saveGameData.soundVolume);
+		AudioBus.SetVolumePercent(GameConstants.MAIN_BUS, _saveGameData.mainVolume);
+		AudioBus.SetVolumePercent(GameConstants.MUSIC_BUS, _saveGameData.musicVolume);
+		AudioBus.SetVolumePercent(GameConstants.EFFECTS_BUS, _saveGameData.soundVolume);
+
+		TranslationServer.SetLocale(_saveGameData.currentLanguage.ToLocale());
 
 		// Broadcast so any menu or card already listening refreshes from the loaded data.
 		_gameEvents.EmitSaveGameDataUpdated(new SaveGameDataVariant(_saveGameData));
@@ -101,6 +101,7 @@ public partial class ProgressionManager : Node
 	private void OnSupportedLanguageUpdated(SupportedLanguagesVariant lang)
 	{
 		_saveGameData.currentLanguage = lang.sl;
+		TranslationServer.SetLocale(lang.sl.ToLocale());
 		WriteSaveDataFile();
 	}
 
@@ -126,15 +127,13 @@ public partial class ProgressionManager : Node
 		if (!isPlayer)
 		{
 			_saveGameData.achievementProgressData.enemiesKilled += 1;
-			
-			return;
-		};
 
-		if (_saveGameData.achievementData.achievementsUnlocked.TryGetValue(Achievements.DIED_FIRST_TIME, out var ach))
-		{
-			AchievementUnlocked(Achievements.DIED_FIRST_TIME);
-		};
-		
+			return;
+		}
+
+		AchievementUnlocked(Achievements.DIED_FIRST_TIME);
+
+
 		var killed = _saveGameData.achievementProgressData.enemiesKilled;
 
 		// Need these individual IF statements not a else if or switch because otherwise say its your

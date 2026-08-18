@@ -54,13 +54,12 @@ public partial class Settings : CanvasLayer
 	private void OnSaveGameDataUpdated(SaveGameDataVariant data)
 	{
 		saveGameData = data;
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.MUSIC_BUS, (float)data.SaveGameData.musicVolume);
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.EFFECTS_BUS, (float)data.SaveGameData.soundVolume);
+		AudioBus.SetVolumePercent(GameConstants.MUSIC_BUS, data.SaveGameData.musicVolume);
+		AudioBus.SetVolumePercent(GameConstants.EFFECTS_BUS, data.SaveGameData.soundVolume);
 	}
 
 	private void OnBackButtonPressed()
 	{
-		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		_menuSystemManager.SetCurrentMenu(MenuType.MAIN);
 	}
@@ -89,14 +88,14 @@ public partial class Settings : CanvasLayer
 	{
 		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		var amount = (float) value;
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.MAIN_BUS, amount);
+		AudioBus.SetVolumePercent(GameConstants.MAIN_BUS, amount);
 		_gameEvents.EmitMainVolume(amount);
 	}
 	private void OnMusicValueChanged(double value)
 	{
 		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		var amount = (float) value;
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.MUSIC_BUS, amount);
+		AudioBus.SetVolumePercent(GameConstants.MUSIC_BUS, amount);
 		_gameEvents.EmitMusicVolume(amount);
 	}
 
@@ -104,20 +103,10 @@ public partial class Settings : CanvasLayer
 	{
 		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		var amount = (float) value;
-		SessionConfigurationManager.SetBusVolumePercent(GameConstants.EFFECTS_BUS, amount);
+		AudioBus.SetVolumePercent(GameConstants.EFFECTS_BUS, amount);
 		_gameEvents.EmitSoundVolume(amount);
 	}
 
-	private float GetBusVolumePercent(string busName)
-	{
-		// all this is needed because DB's are not linear apparently
-		// so we have to convert DB's to a percentage to use a volume slider
-		var bus_index = AudioServer.GetBusIndex(busName);
-		var volume_db = AudioServer.GetBusVolumeDb(bus_index);
-
-		return Mathf.DbToLinear(volume_db);
-	}
-	
 	private void UpdateWindowModeLabel()
 	{
 		// Label reads as the action the button will perform, so it shows the opposite of the current mode.
@@ -131,9 +120,9 @@ public partial class Settings : CanvasLayer
 	{
 		UpdateWindowModeLabel();
 
-		_soundEffectsSlider.Value = GetBusVolumePercent(GameConstants.EFFECTS_BUS);
-		_musicSlider.Value = GetBusVolumePercent(GameConstants.MUSIC_BUS);
-		_mainVolumeSlider.Value = GetBusVolumePercent(GameConstants.MAIN_BUS);
+		_soundEffectsSlider.Value = AudioBus.GetVolumePercent(GameConstants.EFFECTS_BUS);
+		_musicSlider.Value = AudioBus.GetVolumePercent(GameConstants.MUSIC_BUS);
+		_mainVolumeSlider.Value = AudioBus.GetVolumePercent(GameConstants.MAIN_BUS);
 	}
 
 	public void HideVisuals()

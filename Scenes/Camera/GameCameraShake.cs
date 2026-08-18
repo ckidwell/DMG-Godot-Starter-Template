@@ -11,10 +11,8 @@ public partial class GameCameraShake : Camera2D
 	
 	#region CameraShakeProperties
 	
-	[Export] private float shakeStrength = 80.0f;
 	[Export]private float noiseShakeSpeed = 30.0f;
 	private FastNoiseLite noise;
-	private float shake_decay_rate = 0.0f;
 	private float noise_value = 0.0f;
 	private bool shaking = false;
 
@@ -47,7 +45,7 @@ public partial class GameCameraShake : Camera2D
 		_gameEvents.ScreenShake -= OnScreenShake;
 	}
 
-	private void OnScreenShake(float duration, float strength, float strengthDecayRate, float rampTime, float rampStrength)
+	private void OnScreenShake(float duration, float strength, float strengthDecayRate)
 	{
 		shaking = true;
 		currentShakeStrength = strength;
@@ -91,11 +89,9 @@ public partial class GameCameraShake : Camera2D
 	
 	private void CameraTrack()
 	{
-		var playerNodes = GetTree().GetNodesInGroup("player");
+		// GetFirstNodeInGroup avoids allocating an array every frame; the pattern match guards a null/typed miss.
+		if (GetTree().GetFirstNodeInGroup("player") is not Node2D player) return;
 
-		if (playerNodes.Count <= 0) return;
-		var player = playerNodes[0] as Node2D;
-		
 		targetPosition = player.GlobalPosition;
 	}
 }
