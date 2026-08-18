@@ -33,7 +33,7 @@ public partial class GameEvents : Node
     public delegate void RePoolMeEventHandler(ulong mySpawner, Node2D item);
     
     [Signal]
-    public delegate void ScreenShakeEventHandler(float duration, float strength, float size, float rampTime, float rampStrength);
+    public delegate void ScreenShakeEventHandler(float duration, float strength, float strengthDecayRate);
     
     [Signal]
     public delegate void SupportedLanguageUpdatedEventHandler(SupportedLanguagesVariant language);
@@ -79,9 +79,9 @@ public partial class GameEvents : Node
     {
         EmitSignal(SignalName.RePoolMe, mySpawner, item);
     }
-    public void EmitScreenShake(float duration, float strength, float strengthDecayRate, float rampTime, float rampStrength)
+    public void EmitScreenShake(float duration, float strength, float strengthDecayRate)
     {
-        EmitSignal(SignalName.ScreenShake, duration, strength, strengthDecayRate, rampTime, rampStrength);
+        EmitSignal(SignalName.ScreenShake, duration, strength, strengthDecayRate);
     }
     public void EmitSupportedLanguageUpdated(SupportedLanguagesVariant slv)
     {

@@ -30,7 +30,7 @@ Some sample content in this project was generated using AI - you may replace tha
 *  Random NumberManager singleton 
 *  Sound Effects  (8-bit BXSFR style)
 *  Music placeholders (AI Music)
-*  Localization Support for the menu system in 5 languages (English, Spanish, French, German, Japanese)
+*  Localization Support for the menu system in 6 languages (English, Spanish, French, German, Italian, Japanese) — the saved language is applied on startup and when changed
 *  Achievement System
 *  Toast style Notification system with cards that fade over time
     * **Demo:** pressing **Play** on the main menu fires the "Welcome" achievement toast every time, so you can see what an earned achievement and its notification look like. This is intentional demo behavior — it bypasses the normal one-time unlock in `ProgressionManager.AchievementUnlocked()`. Replace it with your own unlock logic (see `MainMenu.OnPlayButtonPressed`).

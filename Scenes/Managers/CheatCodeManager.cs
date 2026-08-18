@@ -34,8 +34,8 @@ public partial class CheatCodeManager : Node
         // fire once on the rising edge so it doesn't repeat every frame while held
         if (screenShakeComboHeld && !_screenShakeComboHeld)
         {
-            // duration, strength, strengthDecayRate, rampTime, rampStrength
-            _gameEvents.EmitScreenShake(0.8f, 150f, 3f, 0f, 0f);
+            // duration, strength, strengthDecayRate
+            _gameEvents.EmitScreenShake(0.8f, 150f, 3f);
         }
 
         _screenShakeComboHeld = screenShakeComboHeld;

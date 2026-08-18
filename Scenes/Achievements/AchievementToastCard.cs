@@ -21,7 +21,9 @@ public partial class AchievementToastCard : PanelContainer
 	        private GameEvents _gameEvents;
 
 	        private bool dispose = false;
-        
+	        
+	        private const float FADE_RATE = 0.6f;
+
         	public override void _Ready()
         	{
 		        _gameEvents = GetNode<GameEvents>("/root/GameEvents");
@@ -51,7 +53,9 @@ public partial class AchievementToastCard : PanelContainer
 		        if (!(timer.TimeLeft <= 0)) return;
 		        
 		        var currentColor = card.Modulate;
-		        var newColor = new Color(1, 1, 1, Mathf.Lerp(currentColor.A, 0, .01f));
+		        // Framerate-independent fade: same curve regardless of FPS.
+		        var fadeWeight = 1f - Mathf.Exp(-(float)delta * FADE_RATE);
+		        var newColor = new Color(1, 1, 1, Mathf.Lerp(currentColor.A, 0, fadeWeight));
 		        card.Modulate = newColor;
 
 		        if (currentColor.A >= .02) return;

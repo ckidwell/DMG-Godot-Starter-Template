@@ -1,3 +1,14 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# .NET build output
+bin/
+obj/
+
+# IDE / editor files
+.idea/
+*.DotSettings.user
+
+# Backup files
+*.old
