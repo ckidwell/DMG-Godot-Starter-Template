@@ -20,8 +20,6 @@ public partial class ProgressionManager : Node
 	
 	private GameEvents _gameEvents;
 
-	// Volume sliders fire ValueChanged many times per drag; coalesce those into a single
-	// write shortly after the last change instead of writing the file on every frame.
 	private Timer _saveDebounceTimer;
 	private bool _pendingSave;
 	private const double SaveDebounceSeconds = 0.5;
@@ -39,21 +37,22 @@ public partial class ProgressionManager : Node
 		_gameEvents.MusicVolume += OnMusicVolumeChanged;
 		_gameEvents.MainVolume += OnMainVolumeChanged;
 
-		_saveDebounceTimer = new Timer { OneShot = true, WaitTime = SaveDebounceSeconds };
+		_saveDebounceTimer = new Timer
+		{
+			OneShot = true,
+			WaitTime = SaveDebounceSeconds,
+			ProcessMode = ProcessModeEnum.Always,
+		};
 		AddChild(_saveDebounceTimer);
 		_saveDebounceTimer.Timeout += OnSaveDebounceTimeout;
 
 		LoadSaveDataFile();
 		
-		// AchievementUnlocked already no-ops if it's unknown or already unlocked.
 		AchievementUnlocked(Achievements.WELCOME_FIRST_TIME);
 
 		ApplyLoadedSettings();
 	}
-
-	// Push the just-loaded save data back out so it actually takes effect for the session.
-	// Without this the audio buses stay at their defaults, and the first visit to the Settings
-	// menu overwrites the saved volumes with those defaults, so they never persist across sessions.
+	
 	private void ApplyLoadedSettings()
 	{
 		AudioBus.SetVolumePercent(GameConstants.MAIN_BUS, _saveGameData.mainVolume);
@@ -61,14 +60,12 @@ public partial class ProgressionManager : Node
 		AudioBus.SetVolumePercent(GameConstants.EFFECTS_BUS, _saveGameData.soundVolume);
 
 		TranslationServer.SetLocale(_saveGameData.currentLanguage.ToLocale());
-
-		// Broadcast so any menu or card already listening refreshes from the loaded data.
+		
 		_gameEvents.EmitSaveGameDataUpdated(new SaveGameDataVariant(_saveGameData));
 	}
 
 	public override void _ExitTree()
 	{
-		// Persist any change still waiting in the debounce window before we shut down.
 		FlushPendingSave();
 
 		if (_gameEvents == null) return;
@@ -102,7 +99,7 @@ public partial class ProgressionManager : Node
 	{
 		_saveGameData.currentLanguage = lang.sl;
 		TranslationServer.SetLocale(lang.sl.ToLocale());
-		WriteSaveDataFile();
+		RequestSave();
 	}
 
 
@@ -113,12 +110,11 @@ public partial class ProgressionManager : Node
 
 		var unlocked = _saveGameData.achievementData.achievementsUnlocked;
 
-		// Gate on "already unlocked", not "key exists": a save written before this achievement was
-		// added to the enum has no entry for it, and it must still be earnable.
 		if (unlocked.TryGetValue(achievement, out var already) && already) return;
 
 		unlocked[achievement] = true;
-		WriteSaveDataFile();
+
+		RequestSave();
 		_gameEvents.EmitAchievementEarned(new AchievementDescriptionVariant(AchievementDescription.GetDescriptionForAchievement(achievement)));
 
 		// Notify any live UI (e.g. an open achievements menu) that the saved data changed.
@@ -148,7 +144,7 @@ public partial class ProgressionManager : Node
 		}
 		
 		_gameEvents.EmitCurrencyUpdated(_saveGameData.currency);
-		WriteSaveDataFile();
+		RequestSave();
 	}
 
 	public static SaveGameData GetSaveGameData()
@@ -200,8 +196,9 @@ public partial class ProgressionManager : Node
 		}
 		catch (Exception e)
 		{
-			// Catch a corrupt save then keep the default _saveGameData .
+			// Guard against corrupt save files crashing startup.
 			GD.PushError($"Failed to load save file, starting from defaults: {e.Message}");
+			PreserveUnreadableSaveFile();
 			SeedData();
 		}
 		//
@@ -216,6 +213,20 @@ public partial class ProgressionManager : Node
 
 	}
 
+
+	private static void PreserveUnreadableSaveFile()
+	{
+		try
+		{
+			var backupPath = SAVE_FILE_PATH + ".corrupt";
+			File.Copy(SAVE_FILE_PATH, backupPath, overwrite: true);
+			GD.PushWarning($"Unreadable save file copied to '{backupPath}'.");
+		}
+		catch (Exception e)
+		{
+			GD.PushWarning($"Could not back up the unreadable save file: {e.Message}");
+		}
+	}
 
 	private static void MergeMissingAchievements()
 	{
@@ -285,19 +296,23 @@ public partial class ProgressionManager : Node
 	/// <param name="objectToWrite">The object instance to write to the file.</param>
 	private static void WriteToJsonFile<T>(string filePath, T objectToWrite) where T : new()
 	{
-		var contentsToWriteToFile = JsonConvert.SerializeObject(objectToWrite);
-
-		var tempFilePath = filePath + ".tmp";
-		File.WriteAllText(tempFilePath, contentsToWriteToFile);
-
-		if (File.Exists(filePath))
+		// Never let a save failure escape: this is called from slider callbacks and a Timer, and an
+		// unhandled exception there takes the whole game down. A full disk, a read-only user folder,
+		// or an antivirus lock on the file should cost the player one save, not the session.
+		try
 		{
-			// File.Replace is atomic on the same volume and keeps the original intact until the swap succeeds.
-			File.Replace(tempFilePath, filePath, null);
+			var contentsToWriteToFile = JsonConvert.SerializeObject(objectToWrite);
+
+			var tempFilePath = filePath + ".tmp";
+			File.WriteAllText(tempFilePath, contentsToWriteToFile);
+
+			// Rename is atomic on the same volume, so an interrupted write can never leave a
+			// truncated save behind; the previous file stays intact until the swap succeeds.
+			File.Move(tempFilePath, filePath, overwrite: true);
 		}
-		else
+		catch (Exception e)
 		{
-			File.Move(tempFilePath, filePath);
+			GD.PushError($"Could not write save file '{filePath}': {e.Message}");
 		}
 	}
 
@@ -310,18 +325,21 @@ public partial class ProgressionManager : Node
 	/// <returns>Returns a new instance of the object read from the Json file.</returns>
 	private static T ReadFromJsonFile<T>(string filePath) where T : new()
 	{
-		TextReader reader = null;
-		try
+		var fileContents = File.ReadAllText(filePath);
+
+		// Tolerant load: an entry the current build no longer understands (an achievement that was
+		// renamed or removed, a language that no longer exists) is skipped with a warning instead
+		// of failing the whole file and resetting every other setting and unlock.
+		var settings = new JsonSerializerSettings
 		{
-			reader = new StreamReader(filePath);
-			var fileContents = reader.ReadToEnd();
-			return JsonConvert.DeserializeObject<T>(fileContents);
-		}
-		finally
-		{
-			if (reader != null)
-				reader.Close();
-		}
+			Error = (_, args) =>
+			{
+				GD.PushWarning($"Skipping unreadable save entry at '{args.ErrorContext.Path}': {args.ErrorContext.Error.Message}");
+				args.ErrorContext.Handled = true;
+			},
+		};
+
+		return JsonConvert.DeserializeObject<T>(fileContents, settings);
 	}
 
 	#endregion
