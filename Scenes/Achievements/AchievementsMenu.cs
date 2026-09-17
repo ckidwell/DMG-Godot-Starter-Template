@@ -53,11 +53,9 @@ public partial class AchievementsMenu : CanvasLayer
             _GridContainer.AddChild(achievementCard);
         }
     }
-
     
     private void OnBackButtonPressed()
     {
-        _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
         _menuSystemManager.SetCurrentMenu(MenuType.MAIN);
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cu0roq8ahja3d"]
+[gd_scene format=3 uid="uid://cu0roq8ahja3d"]
 
 [ext_resource type="Script" uid="uid://ciow50klrkpw5" path="res://Scenes/Audio/AudioStreamPlayerComponent.cs" id="1_3g6fx"]
 [ext_resource type="AudioStream" uid="uid://bt4j1c7nig5v7" path="res://Media/Sounds/blipSelect.wav" id="2_dr0os"]
@@ -8,7 +8,8 @@
 [ext_resource type="AudioStream" uid="uid://4jasqci6tfny" path="res://Media/Sounds/pickupCoin.wav" id="6_7ih3o"]
 [ext_resource type="AudioStream" uid="uid://bt4a2wwh8bu2s" path="res://Media/Sounds/click.wav" id="6_l7y21"]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" node_paths=PackedStringArray("hitPlayer", "bulletPlayer", "explosionPlayer", "xpPlayer")]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" unique_id=284241442 node_paths=PackedStringArray("uiPlayer")]
+bus = &"SFX"
 script = ExtResource("1_3g6fx")
 xpSounds = Array[AudioStream]([ExtResource("2_dr0os")])
 gunfireSounds = Array[AudioStream]([ExtResource("3_l7y21")])
@@ -17,22 +18,8 @@ hitSounds = Array[AudioStream]([ExtResource("5_w22x3")])
 UISounds = Array[AudioStream]([ExtResource("6_l7y21")])
 coinSounds = Array[AudioStream]([ExtResource("6_7ih3o")])
 healthCollectedSounds = Array[AudioStream]([ExtResource("2_dr0os")])
-hitPlayer = NodePath("HitPlayer")
-bulletPlayer = NodePath("BulletPlayer")
-explosionPlayer = NodePath("ExplosionPlayer")
-xpPlayer = NodePath("XpPlayer")
+uiPlayer = NodePath("UIPlayer")
 
-[node name="HitPlayer" type="AudioStreamPlayer2D" parent="."]
-bus = &"SFX"
-
-[node name="UIPlayer" type="AudioStreamPlayer2D" parent="."]
-bus = &"SFX"
-
-[node name="BulletPlayer" type="AudioStreamPlayer2D" parent="."]
-bus = &"SFX"
-
-[node name="ExplosionPlayer" type="AudioStreamPlayer2D" parent="."]
-bus = &"SFX"
-
-[node name="XpPlayer" type="AudioStreamPlayer2D" parent="."]
+[node name="UIPlayer" type="AudioStreamPlayer" parent="." unique_id=1437451652]
+process_mode = 3
 bus = &"SFX"

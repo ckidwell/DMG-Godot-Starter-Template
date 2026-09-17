@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://lv1w271423oa"]
+[gd_scene load_steps=9 format=3 uid="uid://lv1w271423oa"]
 
+[ext_resource type="Script" uid="uid://dxb10e814y4ug" path="res://Scenes/Audio/SoundTextureButton.cs" id="snd_tex"]
 [ext_resource type="Script" uid="uid://bd0fm87e6067i" path="res://Scenes/UI/QuitMenu.cs" id="1_b78nh"]
 [ext_resource type="Texture2D" uid="uid://85gf807a27wr" path="res://Media/game-title.png" id="2_wbpnb"]
 [ext_resource type="FontFile" uid="uid://csqjk5gtg5wuj" path="res://Media/NbPixelFontBundle_v1_0/Rockboxcond12.ttf" id="3_hrrok"]
@@ -69,6 +70,7 @@ text = "QUIT_TO_MAIN_"
 horizontal_alignment = 1
 
 [node name="Confirm" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+script = ExtResource("snd_tex")
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("4_b78nh")
@@ -92,6 +94,7 @@ theme_override_font_sizes/font_size = 40
 text = "CONFIRM_"
 
 [node name="Cancel" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+script = ExtResource("snd_tex")
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("4_b78nh")

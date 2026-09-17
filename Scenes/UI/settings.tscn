@@ -1,5 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dc8hvw5tw8fv6"]
+[gd_scene load_steps=11 format=3 uid="uid://dc8hvw5tw8fv6"]
 
+[ext_resource type="Script" uid="uid://dxb10e814y4ug" path="res://Scenes/Audio/SoundTextureButton.cs" id="snd_tex"]
+[ext_resource type="Script" path="res://Scenes/Audio/SoundCheckButton.cs" id="snd_chk"]
 [ext_resource type="Script" uid="uid://bl7amt3bmfqc8" path="res://Scenes/UI/Settings.cs" id="1_ygnii"]
 [ext_resource type="Texture2D" uid="uid://85gf807a27wr" path="res://Media/game-title.png" id="2_n8st6"]
 [ext_resource type="FontFile" uid="uid://csqjk5gtg5wuj" path="res://Media/NbPixelFontBundle_v1_0/Rockboxcond12.ttf" id="3_dkbde"]
@@ -86,6 +88,7 @@ theme_override_font_sizes/font_size = 30
 text = "WINDOWED_MODE_"
 
 [node name="WindowedCheckButton" type="CheckButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/HBoxContainer2"]
+script = ExtResource("snd_chk")
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -159,6 +162,7 @@ layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxEmpty_ygnii")
 
 [node name="BackButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+script = ExtResource("snd_tex")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

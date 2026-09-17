@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bm8oa0bu021uf"]
+[gd_scene format=3 uid="uid://bm8oa0bu021uf"]
 
 [ext_resource type="FontFile" uid="uid://csqjk5gtg5wuj" path="res://Media/NbPixelFontBundle_v1_0/Rockboxcond12.ttf" id="1_i2xx2"]
 [ext_resource type="Script" uid="uid://baiam5h038e4u" path="res://Scenes/UI/MainMenu.cs" id="1_o14dv"]
 [ext_resource type="Texture2D" uid="uid://85gf807a27wr" path="res://Media/game-title.png" id="2_u7lva"]
 [ext_resource type="Texture2D" uid="uid://c5s3c7d5gcnn0" path="res://Media/UI/button_256_bevl.png" id="4_u7lva"]
+[ext_resource type="Script" uid="uid://dxb10e814y4ug" path="res://Scenes/Audio/SoundTextureButton.cs" id="snd_tex"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i2xx2"]
 
@@ -11,7 +12,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o14dv"]
 
-[node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("_visualControlParent", "_playButton", "_settingsButton", "_quitButton", "_achievementsButton")]
+[node name="MainMenu" type="CanvasLayer" unique_id=982100392 node_paths=PackedStringArray("_visualControlParent", "_playButton", "_settingsButton", "_quitButton", "_achievementsButton")]
 script = ExtResource("1_o14dv")
 _visualControlParent = NodePath("ColorRect")
 _playButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/PlayButton")
@@ -19,7 +20,7 @@ _settingsButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContaine
 _quitButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/QuitButton")
 _achievementsButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/AcheivementsButton")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1403517130]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,7 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.24261835, 0.28146124, 0.4161971, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect" unique_id=868550748]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,49 +36,50 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer" unique_id=1024814493]
 layout_mode = 2
 
-[node name="GameTitleTextureRect" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer"]
+[node name="GameTitleTextureRect" type="TextureRect" parent="ColorRect/MarginContainer/VBoxContainer" unique_id=570964109]
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("2_u7lva")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer" unique_id=556087936]
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1820733493]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_i2xx2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1676161672]
 layout_mode = 2
 
-[node name="VSeparator" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=950052580]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_5wsvm")
 
-[node name="MenuButtonsVBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="MenuButtonsVBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=670643183]
 custom_minimum_size = Vector2(800, 0)
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer" unique_id=1810974463]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_i2xx2")
 theme_override_font_sizes/font_size = 55
 text = "GAME_TEMPLATE_"
 horizontal_alignment = 1
 
-[node name="PlayButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+[node name="PlayButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer" unique_id=1571861184]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("4_u7lva")
+script = ExtResource("snd_tex")
 
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/PlayButton"]
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/PlayButton" unique_id=1780521370]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -95,12 +97,13 @@ theme_override_fonts/font = ExtResource("1_i2xx2")
 theme_override_font_sizes/font_size = 40
 text = "PLAY_"
 
-[node name="SettingsButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+[node name="SettingsButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer" unique_id=67872581]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("4_u7lva")
+script = ExtResource("snd_tex")
 
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/SettingsButton"]
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/SettingsButton" unique_id=1386407908]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -118,12 +121,13 @@ theme_override_fonts/font = ExtResource("1_i2xx2")
 theme_override_font_sizes/font_size = 40
 text = "SETTINGS_"
 
-[node name="AcheivementsButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+[node name="AcheivementsButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer" unique_id=2112408666]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("4_u7lva")
+script = ExtResource("snd_tex")
 
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/AcheivementsButton"]
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/AcheivementsButton" unique_id=1230467197]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -141,12 +145,13 @@ theme_override_fonts/font = ExtResource("1_i2xx2")
 theme_override_font_sizes/font_size = 40
 text = "ACHIEVEMENTS_"
 
-[node name="QuitButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+[node name="QuitButton" type="TextureButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer" unique_id=924124737]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("4_u7lva")
+script = ExtResource("snd_tex")
 
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/QuitButton"]
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/QuitButton" unique_id=153070031]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -164,12 +169,12 @@ theme_override_fonts/font = ExtResource("1_i2xx2")
 theme_override_font_sizes/font_size = 40
 text = "QUIT_"
 
-[node name="VSeparator2" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="VSeparator2" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=657522474]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_5wsvm")
 
-[node name="HSeparator2" type="HSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2112767917]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_o14dv")
