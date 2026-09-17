@@ -16,10 +16,7 @@ public partial class Settings : CanvasLayer
 	private SaveGameDataVariant saveGameData;
 	private GameEvents _gameEvents;
 	private MenuSystemManager _menuSystemManager;
-
-	// This menu is cached by MenuSystemManager and re-added to the tree every time it is shown.
-	// _Ready only runs once, but _ExitTree runs on every hide, so subscriptions must be made in
-	// _EnterTree (which also runs on every show) to stay paired with the unsubscribe below.
+	
 	public override void _EnterTree()
 	{
 		_gameEvents = GetNode<GameEvents>("/root/GameEvents");
@@ -48,6 +45,10 @@ public partial class Settings : CanvasLayer
 		_musicSlider = GetNode<HSlider>("%MusicSlider");
 		_musicSlider.ValueChanged += OnMusicValueChanged;
 		
+		_mainVolumeSlider.DragEnded += OnSliderDragEnded;
+		_soundEffectsSlider.DragEnded += OnSliderDragEnded;
+		_musicSlider.DragEnded += OnSliderDragEnded;
+
 		UpdateDisplay();
 	}
 
@@ -56,24 +57,22 @@ public partial class Settings : CanvasLayer
 		if (_gameEvents == null) return;
 		_gameEvents.SaveGameDataUpdated -= OnSaveGameDataUpdated;
 	}
-
+	
 	private void OnSaveGameDataUpdated(SaveGameDataVariant data)
 	{
 		saveGameData = data;
-		AudioBus.SetVolumePercent(GameConstants.MUSIC_BUS, data.SaveGameData.musicVolume);
-		AudioBus.SetVolumePercent(GameConstants.EFFECTS_BUS, data.SaveGameData.soundVolume);
+		_mainVolumeSlider?.SetValueNoSignal(data.SaveGameData.mainVolume);
+		_soundEffectsSlider?.SetValueNoSignal(data.SaveGameData.soundVolume);
+		_musicSlider?.SetValueNoSignal(data.SaveGameData.musicVolume);
 	}
-
+	
 	private void OnBackButtonPressed()
 	{
-		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		_menuSystemManager.SetCurrentMenu(MenuType.MAIN);
 	}
 
 	private void OnWindowedCheckButtonPressed()
 	{
-		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
-
 		var isWindowed = DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed;
 
 		if (isWindowed)
@@ -92,14 +91,12 @@ public partial class Settings : CanvasLayer
 	
 	private void OnMainVolumeValueChanged(double value)
 	{
-		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		var amount = (float) value;
 		AudioBus.SetVolumePercent(GameConstants.MAIN_BUS, amount);
 		_gameEvents.EmitMainVolume(amount);
 	}
 	private void OnMusicValueChanged(double value)
 	{
-		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		var amount = (float) value;
 		AudioBus.SetVolumePercent(GameConstants.MUSIC_BUS, amount);
 		_gameEvents.EmitMusicVolume(amount);
@@ -107,10 +104,15 @@ public partial class Settings : CanvasLayer
 
 	private void OnEffectsValueChanged(double value)
 	{
-		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 		var amount = (float) value;
 		AudioBus.SetVolumePercent(GameConstants.EFFECTS_BUS, amount);
 		_gameEvents.EmitSoundVolume(amount);
+	}
+
+	private void OnSliderDragEnded(bool valueChanged)
+	{
+		if (!valueChanged) return;
+		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 	}
 
 	private void UpdateWindowModeLabel()
@@ -125,10 +127,10 @@ public partial class Settings : CanvasLayer
 	private void UpdateDisplay()
 	{
 		UpdateWindowModeLabel();
-
-		_soundEffectsSlider.Value = AudioBus.GetVolumePercent(GameConstants.EFFECTS_BUS);
-		_musicSlider.Value = AudioBus.GetVolumePercent(GameConstants.MUSIC_BUS);
-		_mainVolumeSlider.Value = AudioBus.GetVolumePercent(GameConstants.MAIN_BUS);
+		
+		_soundEffectsSlider.SetValueNoSignal(AudioBus.GetVolumePercent(GameConstants.EFFECTS_BUS));
+		_musicSlider.SetValueNoSignal(AudioBus.GetVolumePercent(GameConstants.MUSIC_BUS));
+		_mainVolumeSlider.SetValueNoSignal(AudioBus.GetVolumePercent(GameConstants.MAIN_BUS));
 	}
 
 	public void HideVisuals()

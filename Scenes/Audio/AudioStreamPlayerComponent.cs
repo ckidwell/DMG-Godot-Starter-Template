@@ -1,11 +1,10 @@
 using Godot;
-using System;
 
 namespace DMGStarterTemplate;
 
 public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 {
-    [Export] private AudioStream[] xpSounds;
+	[Export] private AudioStream[] xpSounds;
 	[Export] private AudioStream[] gunfireSounds;
 	[Export] private AudioStream[] explosionSounds;
 	[Export] private AudioStream[] hitSounds;
@@ -17,15 +16,27 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 	[Export] private float minPitch = .9f;
 	[Export] private float maxPitch = 1.1f;
 
-	[Export] private AudioStreamPlayer2D hitPlayer;
-	[Export] private AudioStreamPlayer2D bulletPlayer;
-	[Export] private AudioStreamPlayer2D explosionPlayer;
-	[Export] private AudioStreamPlayer2D xpPlayer;
-	
+	// Maximum number of simultaneous voices per player before the oldest is dropped.
+	[Export] private int polyphony = 16;
+
+	[Export] private AudioStreamPlayer uiPlayer;
+
 	private GameEvents _gameEvents;
 
 	public override void _Ready()
 	{
+		Stream = new AudioStreamPolyphonic { Polyphony = polyphony };
+
+		if (uiPlayer == null)
+		{
+			GD.PushWarning($"{Name}: uiPlayer is not assigned; UI sounds will play through the world SFX player.");
+			uiPlayer = this;
+		}
+		else
+		{
+			uiPlayer.Stream = new AudioStreamPolyphonic { Polyphony = polyphony };
+		}
+
 		_gameEvents = GetNode<GameEvents>("/root/GameEvents");
 		_gameEvents.PlayAudioStream += OnPlayAudioStream;
 	}
@@ -41,80 +52,45 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 		switch (soundEventName)
 		{
 			case GameConstants.S_EXPLOSION:
-				PlayRandomSoundForStreamPlayer(explosionSounds, true, soundEventName);
+				PlayRandomSound(explosionSounds, this, true);
 				return;
 			case GameConstants.S_HIT:
-				PlayRandomSoundForStreamPlayer(hitSounds, true,soundEventName);
+				PlayRandomSound(hitSounds, this, true);
 				return;
 			case GameConstants.S_XP_GEM_COLLECTED:
-				PlayRandomSoundForStreamPlayer(xpSounds, true,soundEventName);
+				PlayRandomSound(xpSounds, this, true);
 				return;
 			case GameConstants.S_BULLET_FIRED:
-				PlayRandomSound(gunfireSounds, bulletPlayer, true);
+				PlayRandomSound(gunfireSounds, this, true);
 				return;
 			case GameConstants.S_COIN_COLLECTED:
-				PlayRandomSound(coinSounds, xpPlayer,true);
+				PlayRandomSound(coinSounds, this, true);
 				return;
 			case GameConstants.S_HEALTH_COLLECTED:
-				PlayRandomSound(healthCollectedSounds, xpPlayer,true);
+				PlayRandomSound(healthCollectedSounds, this, true);
 				return;
 			case GameConstants.UI_CLICK_BUTTON:
-				PlayRandomSound(UISounds, hitPlayer,randomizeClickSoundsPitch);
+				PlayRandomSound(UISounds, uiPlayer, randomizeClickSoundsPitch);
 				return;
 		}
 	}
 
-	private void PlayRandomSoundForStreamPlayer(AudioStream[] sounds, bool randomPitch, string soundEventName)
+	private void PlayRandomSound(AudioStream[] sounds, AudioStreamPlayer player, bool randomPitch)
 	{
 		if (sounds == null || sounds.Length == 0) return;
 
-		var player = soundEventName switch
-		{
-			GameConstants.S_EXPLOSION => explosionPlayer,
-			GameConstants.S_HIT => hitPlayer,
-			GameConstants.S_XP_GEM_COLLECTED => xpPlayer,
-			GameConstants.S_BULLET_FIRED => bulletPlayer,
-			_ => null
-		};
+		var playback = GetPolyphonicPlayback(player);
+		if (playback == null) return;
 
-		if (player == null) return;
-		
-		player.PitchScale = randomPitch ? (float)GD.RandRange(minPitch, maxPitch) : 1f;
+		var pitch = randomPitch ? (float)GD.RandRange(minPitch, maxPitch) : 1f;
+		var sound = sounds[GD.RandRange(0, sounds.Length - 1)];
 
-		var soundToPlay = GD.RandRange(0, sounds.Length - 1);
-		player.Stream = sounds[soundToPlay];
-		player.Play();
+		playback.PlayStream(sound, pitchScale: pitch);
 	}
-
 	
-	private void PlayRandomSound(AudioStream[] sounds, AudioStreamPlayer2D player,bool randomPitch = false )
+	private static AudioStreamPlaybackPolyphonic GetPolyphonicPlayback(AudioStreamPlayer player)
 	{
-		if (sounds == null || sounds.Length == 0) return;
-		
-		player.PitchScale = randomPitch ? (float)GD.RandRange(minPitch, maxPitch) : 1f;
-
-		var soundToPlay = GD.RandRange(0, sounds.Length - 1);
-		player.Stream =  sounds[soundToPlay];
-		player.Play();
-	}
-	private void PlaySound(AudioStream[] sounds, int indexOfSound, bool randomPitch = false)
-	{
-		if (sounds == null || sounds.Length == 0) return;
-
-		if (randomPitch)
-		{
-			PitchScale = (float)GD.RandRange(minPitch, maxPitch);
-		}
-		else
-		{
-			PitchScale = 1f;
-		}
-	
-		Stream =  sounds[indexOfSound];
-		Play();
-	}
-	private void DelayedQueueFree()
-	{
-		Owner.QueueFree();
+		if (!player.Playing) player.Play();
+		return player.GetStreamPlayback() as AudioStreamPlaybackPolyphonic;
 	}
 }

@@ -24,23 +24,20 @@ public partial class MainMenu : CanvasLayer
         _quitButton.Pressed += OnQuitButtonPressed;
         _achievementsButton.Pressed += OnAchievementsButtonPressed;
     }
-
+    
     private void OnAchievementsButtonPressed()
     {
-        _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
         _menuSystemManager.SetCurrentMenu(MenuType.ACHIEVEMENTS);
     }
 
 
     private void OnQuitButtonPressed()
     {
-        _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
         GetTree().Quit();
     }
 
     private void OnSettingsButtonPressed()
     {
-        _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
         _menuSystemManager.SetCurrentMenu(MenuType.SETTINGS);
     }
 
@@ -51,7 +48,6 @@ public partial class MainMenu : CanvasLayer
         // ProgressionManager.AchievementUnlocked() — that path persists the unlock and would only
         // ever show the toast once. Replace this with real unlock logic in your own game.
         _gameEvents.EmitAchievementEarned(new AchievementDescriptionVariant( AchievementDescription.GetDescriptionForAchievement(Achievements.WELCOME_FIRST_TIME)));
-        _gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
         _menuSystemManager.SetCurrentMenu(MenuType.PLAY);
     }
 
