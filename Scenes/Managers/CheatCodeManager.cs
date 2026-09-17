@@ -1,43 +1,28 @@
 using Godot;
-using System;
 
 namespace DMGStarterTemplate;
 
+// Debug cheats. Each cheat is an InputMap action (see project.godot [input]) handled in _UnhandledInput,
+// Cheats only work in debug builds 
 public partial class CheatCodeManager : Node
 {
-    [Export] private bool _cheatEnabled = false;
-
     private GameEvents _gameEvents;
-
-    private bool _screenShakeComboHeld;
-
 
     public override void _Ready()
     {
         _gameEvents = GetNode<GameEvents>("/root/GameEvents");
-      
+        
+        SetProcessUnhandledInput( OS.IsDebugBuild());
     }
 
-    public override void _Process(double delta)
-    {
-
-        if (!_cheatEnabled) return;
-
-        CheckCheatCodes();
-    }
-
-    private void CheckCheatCodes()
+    public override void _UnhandledInput(InputEvent @event)
     {
         // CTRL+S: trigger a strong screen shake.
-        var screenShakeComboHeld = Input.IsKeyPressed(Key.Ctrl) && Input.IsKeyPressed(Key.S);
-
-        // fire once on the rising edge so it doesn't repeat every frame while held
-        if (screenShakeComboHeld && !_screenShakeComboHeld)
+        if (@event.IsActionPressed("cheat_screen_shake"))
         {
             // duration, strength, strengthDecayRate
             _gameEvents.EmitScreenShake(0.8f, 150f, 3f);
+            GetViewport().SetInputAsHandled();
         }
-
-        _screenShakeComboHeld = screenShakeComboHeld;
     }
 }
