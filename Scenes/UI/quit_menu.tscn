@@ -13,6 +13,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o14dv"]
 
 [node name="QuitMenu" type="CanvasLayer" node_paths=PackedStringArray("_confirmButton", "_cancelButton")]
+process_mode = 3
 script = ExtResource("1_b78nh")
 _confirmButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/Confirm")
 _cancelButton = NodePath("ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/Cancel")
