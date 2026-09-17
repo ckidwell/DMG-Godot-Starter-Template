@@ -31,6 +31,18 @@ public partial class PoolSpawner : Node
         _gameEvents.RePoolMe -= OnRepoolMe;
     }
 
+    public override void _Notification(int notificationNumber)
+    {
+        if (notificationNumber != NotificationPredelete) return;
+        
+        foreach (var pooled in _pooledStack)
+        {
+            if (IsInstanceValid(pooled)) pooled.Free();
+        }
+        _pooledStack.Clear();
+        _activeItems.Clear();
+    }
+
 
     public void SetAttachNode(Node2D node2D)
     {
@@ -49,12 +61,19 @@ public partial class PoolSpawner : Node
     
     public Node2D GetItem()
     {
+        var spawnParent = GetSpawnParent();
+        if (spawnParent == null)
+        {
+            GD.PushError($"PoolSpawner '{Name}': no spawn parent. Add a node to the 'entities_layer' group or call SetAttachNode().");
+            return null;
+        }
+
         // Reuse a pooled item whenever one is available; only instantiate when the pool is empty.
         if (_pooledStack.Count > 0)
         {
             var reused = _pooledStack.Pop();
 
-            GetSpawnParent().AddChild(reused);
+            spawnParent.AddChild(reused);
             reused.SetProcess(true);
             reused.SetPhysicsProcess(true);
             reused.Visible = true;
@@ -65,10 +84,16 @@ public partial class PoolSpawner : Node
             return reused;
         }
 
+        if (pooledScene == null)
+        {
+            GD.PushError($"PoolSpawner '{Name}': pooledScene is not assigned in the inspector.");
+            return null;
+        }
+
         var spawned = pooledScene.Instantiate<Node2D>();
         (spawned as IPooledItem)?.SetPoolSpawner(GetInstanceId());
 
-        GetSpawnParent().AddChild(spawned);
+        spawnParent.AddChild(spawned);
         (spawned as IPooledItem)?.Activate();
 
         _activeItems.Add(spawned);

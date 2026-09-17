@@ -17,14 +17,20 @@ public partial class Settings : CanvasLayer
 	private GameEvents _gameEvents;
 	private MenuSystemManager _menuSystemManager;
 
-	public override void _Ready()
+	// This menu is cached by MenuSystemManager and re-added to the tree every time it is shown.
+	// _Ready only runs once, but _ExitTree runs on every hide, so subscriptions must be made in
+	// _EnterTree (which also runs on every show) to stay paired with the unsubscribe below.
+	public override void _EnterTree()
 	{
-		
-		_menuSystemManager = GetNode<MenuSystemManager>("/root/MenuSystemManager");
-			
 		_gameEvents = GetNode<GameEvents>("/root/GameEvents");
 		_gameEvents.SaveGameDataUpdated += OnSaveGameDataUpdated;
-		
+	}
+
+	public override void _Ready()
+	{
+
+		_menuSystemManager = GetNode<MenuSystemManager>("/root/MenuSystemManager");
+
 		_backButton = GetNode<TextureButton>("%BackButton");
 		_backButton.Pressed += OnBackButtonPressed;
 		
