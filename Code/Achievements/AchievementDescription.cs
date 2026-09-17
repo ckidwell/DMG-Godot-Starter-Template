@@ -1,52 +1,42 @@
-using Godot;
 using System;
 
 namespace DMGStarterTemplate;
 
+// Achievement text is stored as translation KEYS, not English strings. The rows live in
+// Localization/game_template_localization - Sheet1.csv. Labels translate the keys themselves
+// (Control.auto_translate is on by default), so assigning a key to Label.Text is enough and the
+// text also refreshes live when the player changes language.
+//
+// To add an achievement: add the enum value, add a case here, add the three rows to the CSV.
 public class AchievementDescription
 {
     public Achievements achievement;
-    public string Title;
-    public string Description;
-    public string earnedFor;
-    
+    public string TitleKey;
+    public string DescriptionKey;
+    public string EarnedForKey;
+
     public static AchievementDescription GetDescriptionForAchievement(Achievements achievement)
     {
         switch (achievement)
         {
             case Achievements.NONE:
-                return new AchievementDescription
-                {
-                    Title = "You've done nothing!",
-                    Description = "You literally got an achievement for nothing.",
-                    earnedFor = "This achievement is given away for free."
-                };
+                return ForKeys(achievement, "ACH_NONE");
             case Achievements.WELCOME_FIRST_TIME:
-                return new AchievementDescription
-                {
-                    Title = "Welcome, and thanks!",
-                    Description = "Thanks for playing, welcome to TEMPLATE GAME!",
-                    earnedFor = "This earned for playing TEMPLATE GAME the first time."
-                };
-              
+                return ForKeys(achievement, "ACH_WELCOME_FIRST_TIME");
             case Achievements.DIED_FIRST_TIME:
-                return new AchievementDescription
-                {
-                    Title = "Death is only the beginning.",
-                    Description = "Congratulations, you died!",
-                    earnedFor = "This earned for dying the first time."
-                };
-
+                return ForKeys(achievement, "ACH_DIED_FIRST_TIME");
             case Achievements.KILL_1:
-                return new AchievementDescription
-                {
-                    Title = "Are you one, Herbert?",
-                    Description = "Well you managed to kill at least one monster!",
-                    earnedFor = "This earned for killing your first monster."
-                };
-            
+                return ForKeys(achievement, "ACH_KILL_1");
             default:
                 throw new ArgumentOutOfRangeException(nameof(achievement), achievement, null);
         }
     }
+
+    private static AchievementDescription ForKeys(Achievements achievement, string prefix) => new()
+    {
+        achievement = achievement,
+        TitleKey = prefix + "_TITLE_",
+        DescriptionKey = prefix + "_DESC_",
+        EarnedForKey = prefix + "_EARNED_",
+    };
 }

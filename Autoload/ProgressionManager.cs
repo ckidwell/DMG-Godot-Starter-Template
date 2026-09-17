@@ -36,6 +36,7 @@ public partial class ProgressionManager : Node
 		_gameEvents.SoundVolume += OnSoundVolumeChanged;
 		_gameEvents.MusicVolume += OnMusicVolumeChanged;
 		_gameEvents.MainVolume += OnMainVolumeChanged;
+		_gameEvents.WindowModeChanged += OnWindowModeChanged;
 
 		_saveDebounceTimer = new Timer
 		{
@@ -60,6 +61,9 @@ public partial class ProgressionManager : Node
 		AudioBus.SetVolumePercent(GameConstants.EFFECTS_BUS, _saveGameData.soundVolume);
 
 		TranslationServer.SetLocale(_saveGameData.currentLanguage.ToLocale());
+
+		// Only apply a window mode the player actually chose; otherwise keep the project default.
+		if (_saveGameData.windowed.HasValue) WindowModeHelper.SetWindowed(_saveGameData.windowed.Value);
 		
 		_gameEvents.EmitSaveGameDataUpdated(new SaveGameDataVariant(_saveGameData));
 	}
@@ -75,6 +79,7 @@ public partial class ProgressionManager : Node
 		_gameEvents.SoundVolume -= OnSoundVolumeChanged;
 		_gameEvents.MusicVolume -= OnMusicVolumeChanged;
 		_gameEvents.MainVolume -= OnMainVolumeChanged;
+		_gameEvents.WindowModeChanged -= OnWindowModeChanged;
 	}
 
 	private void OnMainVolumeChanged(float amount)
@@ -92,6 +97,12 @@ public partial class ProgressionManager : Node
 	private void OnSoundVolumeChanged(float amount)
 	{
 		_saveGameData.soundVolume = amount;
+		RequestSave();
+	}
+
+	private void OnWindowModeChanged(bool windowed)
+	{
+		_saveGameData.windowed = windowed;
 		RequestSave();
 	}
 

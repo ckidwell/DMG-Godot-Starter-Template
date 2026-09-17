@@ -54,4 +54,4 @@ cheat_screen_shake={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.jp.translation")
+locale/translations=PackedStringArray("res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.ja.translation")
