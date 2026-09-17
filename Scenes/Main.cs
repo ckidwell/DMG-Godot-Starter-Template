@@ -30,8 +30,10 @@ public partial class Main : Control
         _menuSystemManager.InitializeMenu(MenuType.MAIN,  mainMenu.Instantiate());
         _menuSystemManager.InitializeMenu(MenuType.SETTINGS, settingsMenu.Instantiate());
         _menuSystemManager.InitializeMenu(MenuType.PAUSE_QUIT, quitGameMenu.Instantiate());
-        _menuSystemManager.InitializeMenu(MenuType.PLAY, gamePlayScene.Instantiate());
         _menuSystemManager.InitializeMenu(MenuType.ACHIEVEMENTS, achievementsMenu.Instantiate());
+
+
+        _menuSystemManager.InitializeFreshMenu(MenuType.PLAY, gamePlayScene);
         
     }
 }

@@ -9,11 +9,9 @@ public partial class QuitMenu : CanvasLayer
     [Export] private TextureButton _cancelButton;
 
     private MenuSystemManager _menuSystemManager;
-
+    
     public override void _Ready()
     {
-        ProcessMode = ProcessModeEnum.Always;
-
         _menuSystemManager = GetNode<MenuSystemManager>("/root/MenuSystemManager");
 
         _confirmButton.Pressed += OnConfirmButtonPressed;
