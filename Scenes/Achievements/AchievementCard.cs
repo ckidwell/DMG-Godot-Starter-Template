@@ -15,12 +15,15 @@ public partial class AchievementCard : PanelContainer
     	private bool _achievementLocked = true;
 	    
 	    private GameEvents _gameEvents;
-
 	    
-    	public override void _Ready()
+    	public override void _EnterTree()
     	{
 		    _gameEvents = GetNode<GameEvents>("/root/GameEvents");
 		    _gameEvents.SaveGameDataUpdated += OnSaveGameDataUpdated;
+    	}
+
+    	public override void _Ready()
+    	{
     		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     		
     		MouseEntered += OnMouseEntered;

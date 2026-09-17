@@ -21,21 +21,39 @@ public partial class AchievementsMenu : CanvasLayer
          
         _GridContainer = GetNode<GridContainer>("%AchievementGridContainer");
 
+        RebuildGrid();
+    }
+    
+    public override void _EnterTree()
+    {
+        if (_GridContainer == null) return;
+
+        RebuildGrid();
+    }
+
+    private void RebuildGrid()
+    {
+        foreach (var child in _GridContainer.GetChildren())
+        {
+            _GridContainer.RemoveChild(child);
+            child.QueueFree();
+        }
+
         var achievements = ProgressionManager.GetSaveGameData().achievementData.achievementsUnlocked;
-         
+
         foreach (var achievement in achievements)
         {
             var achievementCard = AchievementDisplayCard.Instantiate() as AchievementCard;
             if (achievementCard == null) continue;
-            
+
             achievementCard.SetAchievement(achievement.Key, achievement.Value);
             achievementCard.SetDescriptionText(AchievementDescription.GetDescriptionForAchievement(achievement.Key));
             achievementCard.SetUnlockedTexture();
-            
+
             _GridContainer.AddChild(achievementCard);
         }
     }
-    
+
     
     private void OnBackButtonPressed()
     {

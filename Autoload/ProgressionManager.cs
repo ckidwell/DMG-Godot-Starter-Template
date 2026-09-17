@@ -109,11 +109,15 @@ public partial class ProgressionManager : Node
 
 	public void AchievementUnlocked(Achievements achievement)
 	{
-		if (!_saveGameData.achievementData.achievementsUnlocked.TryGetValue(achievement, out var ach)) return;
+		if (achievement == Achievements.NONE) return;
 
-		if (ach) return;
-		
-		_saveGameData.achievementData.achievementsUnlocked[achievement] = true;
+		var unlocked = _saveGameData.achievementData.achievementsUnlocked;
+
+		// Gate on "already unlocked", not "key exists": a save written before this achievement was
+		// added to the enum has no entry for it, and it must still be earnable.
+		if (unlocked.TryGetValue(achievement, out var already) && already) return;
+
+		unlocked[achievement] = true;
 		WriteSaveDataFile();
 		_gameEvents.EmitAchievementEarned(new AchievementDescriptionVariant(AchievementDescription.GetDescriptionForAchievement(achievement)));
 
@@ -183,8 +187,7 @@ public partial class ProgressionManager : Node
 		try
 		{
 			var saveFile = ReadFromJsonFile<SaveGameData>(SAVE_FILE_PATH);
-
-			// DeserializeObject returns null for empty or "null" file contents.
+			
 			if (saveFile == null)
 			{
 				GD.PushWarning("Save file was empty or invalid; starting from defaults.");
@@ -193,10 +196,11 @@ public partial class ProgressionManager : Node
 			}
 
 			_saveGameData = saveFile;
+			MergeMissingAchievements();
 		}
 		catch (Exception e)
 		{
-			// A corrupt save must never crash startup. Keep the default _saveGameData and carry on.
+			// Catch a corrupt save then keep the default _saveGameData .
 			GD.PushError($"Failed to load save file, starting from defaults: {e.Message}");
 			SeedData();
 		}
@@ -212,9 +216,20 @@ public partial class ProgressionManager : Node
 
 	}
 
+
+	private static void MergeMissingAchievements()
+	{
+		var unlocked = _saveGameData.achievementData.achievementsUnlocked;
+		foreach (var achievement in Enum.GetValues<Achievements>())
+		{
+			if (achievement == Achievements.NONE) continue;
+			unlocked.TryAdd(achievement, false);
+		}
+	}
+
 	private void SeedData()
 	{
-		
+
 		// if (_saveGameData.upgradesSaveData.Count != 0) return;
 		//
 		// //only seeding MetaUpgrade's because its the only item as of this writing that is not complete when created new()
@@ -223,8 +238,7 @@ public partial class ProgressionManager : Node
 		// 	_saveGameData.upgradesSaveData.Add(metaUpgradeData.id,metaUpgradeData);    
 		// }
 	}
-	// Debounced save: (re)start the countdown so the file is written once changes stop for
-	// SaveDebounceSeconds. Prevents the per-frame write storm caused by dragging a volume slider.
+	//  Prevents the per-frame write storm caused by dragging a volume slider.
 	private void RequestSave()
 	{
 		_pendingSave = true;
