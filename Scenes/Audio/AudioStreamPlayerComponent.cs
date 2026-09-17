@@ -22,6 +22,8 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 	[Export] private AudioStreamPlayer uiPlayer;
 
 	private GameEvents _gameEvents;
+	// Shared RNG so sound variation is reproducible under a deterministic seed.
+	private RandomNumberManager _random;
 
 	public override void _Ready()
 	{
@@ -38,6 +40,7 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 		}
 
 		_gameEvents = GetNode<GameEvents>("/root/GameEvents");
+		_random = GetNode<RandomNumberManager>("/root/RandomNumberManager");
 		_gameEvents.PlayAudioStream += OnPlayAudioStream;
 	}
 
@@ -82,8 +85,8 @@ public partial class AudioStreamPlayerComponent : AudioStreamPlayer
 		var playback = GetPolyphonicPlayback(player);
 		if (playback == null) return;
 
-		var pitch = randomPitch ? (float)GD.RandRange(minPitch, maxPitch) : 1f;
-		var sound = sounds[GD.RandRange(0, sounds.Length - 1)];
+		var pitch = randomPitch ? _random.GetRandomNumber(minPitch, maxPitch) : 1f;
+		var sound = sounds[_random.GetRandomIndex(sounds.Length)];
 
 		playback.PlayStream(sound, pitchScale: pitch);
 	}

@@ -1,40 +1,43 @@
 using Godot;
-using System;
 
 namespace DMGStarterTemplate;
 
+// Camera2D that follows the node in the "player" group and shakes on GameEvents.ScreenShake.
+// Opt-in: drop this scene/script onto the Camera2D in your gameplay scene.
 public partial class GameCameraShake : Camera2D
 {
-    private Vector2 targetPosition = Vector2.Zero;
+	private Vector2 targetPosition = Vector2.Zero;
 	private GameEvents _gameEvents;
-	private RandomNumberGenerator _randomNumberGenerator;
-	
+	private RandomNumberManager _random;
+
+	private Node2D _player;
+
 	#region CameraShakeProperties
-	
-	[Export]private float noiseShakeSpeed = 30.0f;
+
+	[Export] private float noiseShakeSpeed = 30.0f;
+	// How quickly the camera catches up with the player: higher is snappier.
+	[Export] private float followSharpness = 20.0f;
 	private FastNoiseLite noise;
 	private float noise_value = 0.0f;
-	private bool shaking = false;
 
-	private double shakeEndTimeMsec = 0.0;
+	// Shake timing is driven by process delta (a countdown), not by wall-clock time, so it
+	// pauses with the tree and respects Engine.TimeScale.
+	private float shakeTimeLeft = 0.0f;
 	private float currentShakeStrength = 0.0f;
 	private float currentShakeDecayRate = 0.0f;
 
 	#endregion
-	
-	
-	
+
 	public override void _Ready()
 	{
-		_randomNumberGenerator = new RandomNumberGenerator();
-		_randomNumberGenerator.Randomize();
-		
+		_random = GetNode<RandomNumberManager>("/root/RandomNumberManager");
 		_gameEvents = GetNode<GameEvents>("/root/GameEvents");
-		
+
 		noise = new FastNoiseLite();
 		noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Simplex;
-		noise.Seed = (int)_randomNumberGenerator.Randi();
-		
+
+		noise.Seed = _random.GetRandomNumber(int.MinValue, int.MaxValue);
+
 		_gameEvents.ScreenShake += OnScreenShake;
 		MakeCurrent();
 	}
@@ -47,51 +50,52 @@ public partial class GameCameraShake : Camera2D
 
 	private void OnScreenShake(float duration, float strength, float strengthDecayRate)
 	{
-		shaking = true;
+		shakeTimeLeft = duration;
 		currentShakeStrength = strength;
 		currentShakeDecayRate = strengthDecayRate;
-		shakeEndTimeMsec = duration * 1000 + Time.GetTicksMsec();
 	}
 
 	public override void _Process(double delta)
 	{
+		var dt = (float)delta;
+
 		CameraTrack();
 
-		GlobalPosition = GlobalPosition.Lerp(targetPosition, (float)(1.0f - Mathf.Exp(-delta * 20)));
+		// Exponential smoothing: frame-rate independent, unlike Lerp with a factor of k*delta.
+		GlobalPosition = GlobalPosition.Lerp(targetPosition, 1.0f - Mathf.Exp(-dt * followSharpness));
 
-		UpdateShake(delta);
+		UpdateShake(dt);
 	}
 
-	private void UpdateShake(double delta)
+	private void UpdateShake(float dt)
 	{
-		if (!shaking) return;
+		if (shakeTimeLeft <= 0.0f) return;
 
-		if (Time.GetTicksMsec() >= shakeEndTimeMsec)
+		shakeTimeLeft -= dt;
+		if (shakeTimeLeft <= 0.0f)
 		{
-			shaking = false;
 			Offset = Vector2.Zero;
 			return;
 		}
 
-		currentShakeStrength = float.Lerp(currentShakeStrength, 0, currentShakeDecayRate * (float)delta);
-		Offset = GetRandomOffset(currentShakeStrength);
+		// True exponential decay: the same curve at 30 fps and 144 fps.
+		currentShakeStrength *= Mathf.Exp(-currentShakeDecayRate * dt);
+
+		noise_value += dt * noiseShakeSpeed;
+		Offset = new Vector2(
+			noise.GetNoise2D(1, noise_value),
+			noise.GetNoise2D(100, noise_value)
+		) * currentShakeStrength;
 	}
 
-	private Vector2 GetRandomOffset(float strength)
-	{
-		noise_value += (float)GetProcessDeltaTime() * noiseShakeSpeed;
-		
-		return new Vector2(
-			noise.GetNoise2D(1, noise_value) * strength,
-			noise.GetNoise2D(100, noise_value) * strength
-			);
-	}
-	
 	private void CameraTrack()
 	{
-		// GetFirstNodeInGroup avoids allocating an array every frame; the pattern match guards a null/typed miss.
-		if (GetTree().GetFirstNodeInGroup("player") is not Node2D player) return;
+		if (!IsInstanceValid(_player))
+		{
+			_player = GetTree().GetFirstNodeInGroup("player") as Node2D;
+			if (_player == null) return;
+		}
 
-		targetPosition = player.GlobalPosition;
+		targetPosition = _player.GlobalPosition;
 	}
 }
