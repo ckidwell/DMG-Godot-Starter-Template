@@ -16,6 +16,9 @@ public class SaveGameData
     public float musicVolume = .5f;
     public float soundVolume = .5f;
     public int currency = 0;
+
+    // null = never chosen; the project/OS default applies until the player toggles it in Settings.
+    public bool? windowed = null;
     public AchievementData achievementData = new();
 
     [JsonConverter(typeof(StringEnumConverter))]

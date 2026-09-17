@@ -1,9 +1,9 @@
-LANGUAGE,en,fr,es,de,it,jp
+LANGUAGE,en,fr,es,de,it,ja
 English,English,Anglaise,Inglés,Englisch,English,英語
 French,Francais,Français,Francés,Französisch,Francais,フランス語
 Spanish,Espanol,Inglesa,Español,Spanisch,Espanol,スペイン語
 German,Deutsch,Alemana,Alemán,Deutsch,Deutsch,ドイツ人
-Japanese,Japanese,Japonesa,Japonés,Japanisch,Japanese,本語
+Japanese,Japanese,Japonesa,Japonés,Japanisch,Japanese,日本語
 Italian,Italian,Italiana,Italiana,Italienisch,Italiana,イタリアの
 PRESS_ANY_,PRESS ANY KEY TO CONTINUE..,APPUYEZ SUR N'IMPORTE QUELLE TOUCHE POUR CONTINUER..,PULSE CUALQUIER TECLA PARA CONTINUAR..,"DRÜCKEN SIE EINE BELIEBIGE TASTE, UM FORTZUFAHREN..",PREMERE UN TASTO QUALSIASI PER CONTINUARE..,何かキーを押すと続行します..
 PLAY_,PLAY,JOUER,JUGAR,SPIELEN,GIOCARE,遊ぶ
@@ -39,3 +39,16 @@ SOUND_EFFECTS_VOLUME_,Sound Effects Volume,Volume des effets sonores,Volumen de 
 MUSIC_VOLUME_,Music Volume,Volume musical,Volumen de la música,Musiklautstärke,Volume della musica,音楽の音量
 GAME_TEMPLATE_,Game Template,Modèle de jeu,Plantilla de juego,Spielvorlage,Modello di gioco,ゲームテンプレート
 QUIT_TO_MAIN_,Quit to Main Menu?,Retour au menu principal ?,¿Salir al menú principal?,Zurück zum Hauptmenü?,Vuoi tornare al menu principale?,メインメニューに戻りますか?
+LANGUAGE_,Language,Langue,Idioma,Sprache,Lingua,言語
+ACH_NONE_TITLE_,You've done nothing!,Vous n'avez rien fait !,¡No has hecho nada!,Du hast nichts getan!,Non hai fatto niente!,何もしていない！
+ACH_NONE_DESC_,You literally got an achievement for nothing.,Vous avez littéralement obtenu un succès pour rien.,Literalmente conseguiste un logro por nada.,Du hast buchstäblich einen Erfolg für nichts bekommen.,Hai letteralmente ottenuto un risultato per niente.,文字通り何もせずに実績を獲得しました。
+ACH_NONE_EARNED_,This achievement is given away for free.,Ce succès est offert gratuitement.,Este logro se regala gratis.,Dieser Erfolg wird verschenkt.,Questo risultato viene regalato.,この実績は無料で付与されます。
+ACH_WELCOME_FIRST_TIME_TITLE_,"Welcome, and thanks!","Bienvenue, et merci !",¡Bienvenido y gracias!,Willkommen und danke!,Benvenuto e grazie!,ようこそ、そしてありがとう！
+ACH_WELCOME_FIRST_TIME_DESC_,"Thanks for playing, welcome to TEMPLATE GAME!","Merci de jouer, bienvenue dans TEMPLATE GAME !","¡Gracias por jugar, bienvenido a TEMPLATE GAME!","Danke fürs Spielen, willkommen bei TEMPLATE GAME!","Grazie per aver giocato, benvenuto in TEMPLATE GAME!",プレイしてくれてありがとう、TEMPLATE GAMEへようこそ！
+ACH_WELCOME_FIRST_TIME_EARNED_,Earned for playing TEMPLATE GAME for the first time.,Obtenu en jouant à TEMPLATE GAME pour la première fois.,Conseguido por jugar a TEMPLATE GAME por primera vez.,Verdient für das erste Spielen von TEMPLATE GAME.,Ottenuto giocando a TEMPLATE GAME per la prima volta.,TEMPLATE GAMEを初めてプレイして獲得。
+ACH_DIED_FIRST_TIME_TITLE_,Death is only the beginning.,La mort n'est que le début.,La muerte es solo el comienzo.,Der Tod ist erst der Anfang.,La morte è solo l'inizio.,死は始まりに過ぎない。
+ACH_DIED_FIRST_TIME_DESC_,"Congratulations, you died!","Félicitations, vous êtes mort !","¡Felicidades, has muerto!","Glückwunsch, du bist gestorben!","Congratulazioni, sei morto!",おめでとう、死にました！
+ACH_DIED_FIRST_TIME_EARNED_,Earned for dying for the first time.,Obtenu en mourant pour la première fois.,Conseguido por morir por primera vez.,Verdient für den ersten Tod.,Ottenuto morendo per la prima volta.,初めて死んで獲得。
+ACH_KILL_1_TITLE_,"Are you one, Herbert?","En es-tu un, Herbert ?","¿Eres uno, Herbert?","Bist du einer, Herbert?","Sei uno di loro, Herbert?",君も一人なのか、ハーバート？
+ACH_KILL_1_DESC_,"Well, you managed to kill at least one monster!","Eh bien, vous avez réussi à tuer au moins un monstre !","¡Bueno, lograste matar al menos un monstruo!","Nun, du hast mindestens ein Monster getötet!","Beh, sei riuscito a uccidere almeno un mostro!",少なくとも1体のモンスターを倒しました！
+ACH_KILL_1_EARNED_,Earned for killing your first monster.,Obtenu en tuant votre premier monstre.,Conseguido por matar a tu primer monstruo.,Verdient für das Töten deines ersten Monsters.,Ottenuto uccidendo il tuo primo mostro.,最初のモンスターを倒して獲得。

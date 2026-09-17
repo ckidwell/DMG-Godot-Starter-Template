@@ -80,7 +80,7 @@ public partial class AchievementCard : PanelContainer
 	    }
     	public void SetDescriptionText(AchievementDescription description)
 	    {
-		    nameLabel.Text = description.Title;
-    		descriptionLabel.Text = description.Description;
+		    nameLabel.Text = description.TitleKey;
+    		descriptionLabel.Text = description.DescriptionKey;
     	}
 }

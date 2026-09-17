@@ -92,6 +92,27 @@ script = ExtResource("snd_chk")
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="VSeparatorLanguage" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_ygnii")
+
+[node name="LanguageContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="LanguageLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/LanguageContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_dkbde")
+theme_override_font_sizes/font_size = 30
+text = "LANGUAGE_"
+
+[node name="LanguageOptionButton" type="OptionButton" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer/LanguageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_dkbde")
+theme_override_font_sizes/font_size = 30
+
 [node name="VSeparator2" type="VSeparator" parent="ColorRect/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MenuButtonsVBoxContainer"]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2

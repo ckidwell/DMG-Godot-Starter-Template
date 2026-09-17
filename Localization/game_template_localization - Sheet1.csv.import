@@ -6,12 +6,14 @@ uid="uid://c6wwm854la6ra"
 
 [deps]
 
-files=["res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.jp.translation"]
+files=["res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.ja.translation"]
 
 source_file="res://Localization/game_template_localization - Sheet1.csv"
-dest_files=["res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.jp.translation"]
+dest_files=["res://Localization/game_template_localization - Sheet1.en.translation", "res://Localization/game_template_localization - Sheet1.fr.translation", "res://Localization/game_template_localization - Sheet1.es.translation", "res://Localization/game_template_localization - Sheet1.de.translation", "res://Localization/game_template_localization - Sheet1.it.translation", "res://Localization/game_template_localization - Sheet1.ja.translation"]
 
 [params]
 
 compress=true
 delimiter=0
+unescape_keys=false
+unescape_translations=true

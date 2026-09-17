@@ -37,6 +37,9 @@ public partial class GameEvents : Node
     
     [Signal]
     public delegate void SupportedLanguageUpdatedEventHandler(SupportedLanguagesVariant language);
+
+    [Signal]
+    public delegate void WindowModeChangedEventHandler(bool windowed);
     
     [Signal]
     public delegate void AchievementEarnedEventHandler(AchievementDescriptionVariant adv);
@@ -82,6 +85,10 @@ public partial class GameEvents : Node
     public void EmitScreenShake(float duration, float strength, float strengthDecayRate)
     {
         EmitSignal(SignalName.ScreenShake, duration, strength, strengthDecayRate);
+    }
+    public void EmitWindowModeChanged(bool windowed)
+    {
+        EmitSignal(SignalName.WindowModeChanged, windowed);
     }
     public void EmitSupportedLanguageUpdated(SupportedLanguagesVariant slv)
     {

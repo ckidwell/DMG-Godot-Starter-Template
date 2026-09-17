@@ -6,17 +6,20 @@ namespace DMGStarterTemplate;
 public partial class Settings : CanvasLayer
 {
 	[Export] private Control _visualControlParent;
-    private CheckButton _windowedCheckButton;
+	private CheckButton _windowedCheckButton;
 	private TextureButton _backButton;
 	private HSlider _mainVolumeSlider;
 	private HSlider _soundEffectsSlider;
 	private HSlider _musicSlider;
-	private Label _windowModeLabel;
+	private OptionButton _languageOptionButton;
 
 	private SaveGameDataVariant saveGameData;
 	private GameEvents _gameEvents;
 	private MenuSystemManager _menuSystemManager;
-	
+
+	// The language list is rebuilt from the enum, in this order, so item index == enum index.
+	private static readonly SupportedLanguages[] Languages = Enum.GetValues<SupportedLanguages>();
+
 	public override void _EnterTree()
 	{
 		_gameEvents = GetNode<GameEvents>("/root/GameEvents");
@@ -25,26 +28,29 @@ public partial class Settings : CanvasLayer
 
 	public override void _Ready()
 	{
-
 		_menuSystemManager = GetNode<MenuSystemManager>("/root/MenuSystemManager");
 
 		_backButton = GetNode<TextureButton>("%BackButton");
 		_backButton.Pressed += OnBackButtonPressed;
-		
-		_windowModeLabel = GetNode<Label>("%WindowModeLabel");
-		
+
+		// Checked == windowed. The label next to it stays the translated "WINDOWED_MODE_" key from
+		// the scene; the check state, not the label text, shows the current mode.
 		_windowedCheckButton = GetNode<CheckButton>("%WindowedCheckButton");
-		_windowedCheckButton.Pressed += OnWindowedCheckButtonPressed;
-		
+		_windowedCheckButton.Toggled += OnWindowedToggled;
+
+		_languageOptionButton = GetNode<OptionButton>("%LanguageOptionButton");
+		PopulateLanguageOptions();
+		_languageOptionButton.ItemSelected += OnLanguageSelected;
+
 		_mainVolumeSlider = GetNode<HSlider>("%MainVolumeSlider");
 		_mainVolumeSlider.ValueChanged += OnMainVolumeValueChanged;
-		
+
 		_soundEffectsSlider = GetNode<HSlider>("%SFXSlider");
 		_soundEffectsSlider.ValueChanged += OnEffectsValueChanged;
-		
+
 		_musicSlider = GetNode<HSlider>("%MusicSlider");
 		_musicSlider.ValueChanged += OnMusicValueChanged;
-		
+
 		_mainVolumeSlider.DragEnded += OnSliderDragEnded;
 		_soundEffectsSlider.DragEnded += OnSliderDragEnded;
 		_musicSlider.DragEnded += OnSliderDragEnded;
@@ -57,38 +63,66 @@ public partial class Settings : CanvasLayer
 		if (_gameEvents == null) return;
 		_gameEvents.SaveGameDataUpdated -= OnSaveGameDataUpdated;
 	}
-	
+
+	public override void _Notification(int what)
+	{
+		// OptionButton items were added with Tr() at population time, so re-translate them when
+		// the locale changes (auto-translate only covers text set in the scene).
+		if (what == NotificationTranslationChanged && _languageOptionButton != null)
+		{
+			PopulateLanguageOptions();
+		}
+	}
+
 	private void OnSaveGameDataUpdated(SaveGameDataVariant data)
 	{
 		saveGameData = data;
 		_mainVolumeSlider?.SetValueNoSignal(data.SaveGameData.mainVolume);
 		_soundEffectsSlider?.SetValueNoSignal(data.SaveGameData.soundVolume);
 		_musicSlider?.SetValueNoSignal(data.SaveGameData.musicVolume);
+		SelectLanguage(data.SaveGameData.currentLanguage);
 	}
-	
+
 	private void OnBackButtonPressed()
 	{
 		_menuSystemManager.SetCurrentMenu(MenuType.MAIN);
 	}
 
-	private void OnWindowedCheckButtonPressed()
+	private void OnWindowedToggled(bool windowed)
 	{
-		var isWindowed = DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed;
-
-		if (isWindowed)
-		{
-			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
-		}
-		else
-		{
-			DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, false);
-			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
-		}
-
-		UpdateWindowModeLabel();
+		WindowModeHelper.SetWindowed(windowed);
+		_gameEvents.EmitWindowModeChanged(windowed);
 	}
 
-	
+	private void PopulateLanguageOptions()
+	{
+		var current = _languageOptionButton.Selected;
+
+		_languageOptionButton.Clear();
+		foreach (var language in Languages)
+		{
+			_languageOptionButton.AddItem(Tr(language.DisplayNameKey()), (int)language);
+		}
+
+		if (current >= 0) _languageOptionButton.Selected = current;
+		else SelectLanguage(ProgressionManager.GetSaveGameData().currentLanguage);
+	}
+
+	private void SelectLanguage(SupportedLanguages language)
+	{
+		if (_languageOptionButton == null) return;
+		var index = Array.IndexOf(Languages, language);
+		if (index >= 0) _languageOptionButton.Selected = index;
+	}
+
+	private void OnLanguageSelected(long index)
+	{
+		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
+		var language = (SupportedLanguages)_languageOptionButton.GetItemId((int)index);
+		// ProgressionManager sets the locale and saves; every auto-translated label updates itself.
+		_gameEvents.EmitSupportedLanguageUpdated(new SupportedLanguagesVariant(language));
+	}
+
 	private void OnMainVolumeValueChanged(double value)
 	{
 		var amount = (float) value;
@@ -115,22 +149,16 @@ public partial class Settings : CanvasLayer
 		_gameEvents.EmitPlayAudioStream(GameConstants.UI_CLICK_BUTTON);
 	}
 
-	private void UpdateWindowModeLabel()
-	{
-		// Label reads as the action the button will perform, so it shows the opposite of the current mode.
-		_windowModeLabel.Text =
-			DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed
-				? "SET FULLSCREEN"
-				: "SET WINDOWED";
-	}
-
 	private void UpdateDisplay()
 	{
-		UpdateWindowModeLabel();
-		
+		// Reflect the real window mode, whatever set it (project setting, command line, saved preference).
+		_windowedCheckButton.SetPressedNoSignal(WindowModeHelper.IsWindowed);
+
 		_soundEffectsSlider.SetValueNoSignal(AudioBus.GetVolumePercent(GameConstants.EFFECTS_BUS));
 		_musicSlider.SetValueNoSignal(AudioBus.GetVolumePercent(GameConstants.MUSIC_BUS));
 		_mainVolumeSlider.SetValueNoSignal(AudioBus.GetVolumePercent(GameConstants.MAIN_BUS));
+
+		SelectLanguage(ProgressionManager.GetSaveGameData().currentLanguage);
 	}
 
 	public void HideVisuals()
