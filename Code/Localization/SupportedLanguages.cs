@@ -1,7 +1,7 @@
 namespace DMGStarterTemplate;
 
-// Order is append-only: values are serialized to the save file by ordinal, so add new
-// languages at the end to keep existing saves valid.
+// Saved to the save file by NAME (see SaveGameData). Values can be reordered, but never rename
+// or remove one once a build has shipped, or players who chose that language fall back to EN.
 public enum SupportedLanguages
 {
     EN,
